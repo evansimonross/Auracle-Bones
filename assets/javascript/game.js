@@ -59,19 +59,25 @@ var game = {
         for(var i=0;i<numberOfBoneTypes;i++){
             var boneId = boneIds[Math.floor(Math.random()*boneIds.length)];
             boneIds.splice(boneIds.indexOf(boneId),1);
-            boneId = "../images/bone" + boneSet + boneId + ".png";
+            boneId = "assets/images/bone" + boneSet + boneId + ".png";
             var rotation = Math.floor(Math.random()*8)*45;
             var boneAura = auras[Math.floor(Math.random()*auras.length)];
             auras.splice(auras.indexOf(boneAura),1);
             bonesInRound.push({image: boneId, rotation, aura: boneAura});
         }
 
-        // Choose how many of each bone to display.
+        // Choose how many of each bone to display, and displays them.
 
         for(var i=0; i<numberOfBones;i++){
-            var bone = bonesInRound[Math.floor(Math.random()*bonesInRound.length)];
-            bonesOnScreen.push(JSON.parse(JSON.stringify(bone)));
+            var boneType = bonesInRound[Math.floor(Math.random()*bonesInRound.length)];
+            var bone = $('<img>');
+            bone.attr('src',boneType.image);
+            bone.css('transform','rotate('+boneType.rotation+'deg)');
+            bone.css('float,left');
+            bone.attr('width','100px');
+            $('#boneyard').append(bone);
         }
+
 
 
         this.round = {difficulty, aura, bonesInRound, bonesOnScreen, spells, enemy};
