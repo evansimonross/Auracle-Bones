@@ -15,6 +15,7 @@ h1{
     font-weight: 700;
     margin: auto;
     text-align:center;
+    -webkit-text-stroke: 1.5px black;
 }
 
 .header-img{
