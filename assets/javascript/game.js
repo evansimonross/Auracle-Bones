@@ -75,14 +75,81 @@ var game = {
             bone.css('transform','rotate('+boneType.rotation+'deg)');
             bone.css('float,left');
             bone.attr('width','100px');
+            bone.attr('aura',boneType.aura);
+            bone.on('click',function(){
+
+                // Increase aura and animate the bone's disappearance.
+                aura += parseInt($(this).attr('aura'));
+                $('#aura').text(aura);
+                $(this).on('click,',function(){});
+                $(this).fadeOut("slow");
+
+            });
             $('#boneyard').append(bone);
+            bonesOnScreen.push(bone);
         }
 
+        // Create the spells available in this round.
 
+        var spellAura = 0;
+        var spellOrNot = 0;
+        var stepsWithNoSpell = 0;
+        for(var i=0;i<numberOfBones;i++){
+            var index = Math.floor(Math.random()*bonesOnScreen.length);
+            var bone = bonesOnScreen[index];
+            bonesOnScreen.splice(index,1);
+            spellAura += parseInt(bone.attr('aura'));
+            spellOrNot += Math.floor(Math.random()*5)+stepsWithNoSpell;
+            if(spellOrNot>5){
+                var spellType = Math.floor(Math.random()*2);
+                
+                var spell = {
+                    spellAura, spellType
+                };
+
+                //Damage spells
+                if(spellType===0){
+                    if(spellAura<20){
+                        spell.spellImage="assets/images/fireball-red-1.png";
+                    }
+                    else if(spellAura>50){
+                        spell.spellImage="assets/images/fireball-red-3.png";
+                    }
+                    else{
+                        spell.spellImage="assets/images/fireball-red-2.png";
+                    }
+                    // Create the spell
+                    spell.cast() = function(){
+                        alert("Dealt " + this.spellAura + " damage");
+                    }
+                }
+                //Healing spells
+                else if(spellType===1){
+                    if(spellAura<20){
+                        spell.spellImage="assets/images/heal-royal-1.png";
+                    }
+                    else if(spellAura>50){
+                        spell.spellImage="assets/images/heal-royal-3.png";
+                    }
+                    else{
+                        spell.spellImage="assets/images/heal-royal-2.png";
+                    }
+                    // Create the spell
+                    spell.cast() = function(){
+                        alert("Healed " + this.spellAura + " hit points");
+                    }
+                }
+
+                spells.push(spell);
+                spellOrNot = 0;
+            }
+        }
+
+        // Display the spells:
+        
 
         this.round = {difficulty, aura, bonesInRound, bonesOnScreen, spells, enemy};
     }
 };
 
 game.newRound();
-console.log(game.round);

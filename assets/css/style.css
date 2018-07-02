@@ -7,6 +7,7 @@ body{
 .game{
     max-width: 100%;
     border: 3px solid;
+    outline: 2px solid #000;
     margin: 20px;
     align-items: center;
 }
@@ -15,7 +16,7 @@ h1{
     font-weight: 700;
     margin: auto;
     text-align:center;
-    -webkit-text-stroke: 1.5px black;
+    -webkit-text-stroke: 1.5px #000;
 }
 
 .header-img{
@@ -39,5 +40,6 @@ hr{
     height: 1px;
     border: 0;
     border-top: 3px solid;
+    outline: 1px solid #000;
     padding: 0;
 }
