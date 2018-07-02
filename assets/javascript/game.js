@@ -103,50 +103,55 @@ var game = {
             if(spellOrNot>5){
                 var spellType = Math.floor(Math.random()*2);
                 
-                var spell = {
-                    spellAura, spellType
-                };
+                var spell = $('<img>');
+                spell.attr('width','100px');
+                spell.attr('aura',spellAura);
+                spell.css('float','left');
+                spell.css('margin','20px');
 
                 //Damage spells
                 if(spellType===0){
                     if(spellAura<20){
-                        spell.spellImage="assets/images/fireball-red-1.png";
+                        spell.attr('src','assets/images/fireball-red-1.png');
                     }
                     else if(spellAura>50){
-                        spell.spellImage="assets/images/fireball-red-3.png";
+                        spell.attr('src','assets/images/fireball-red-3.png');
                     }
                     else{
-                        spell.spellImage="assets/images/fireball-red-2.png";
+                        spell.attr('src','assets/images/fireball-red-2.png');
                     }
                     // Create the spell
-                    spell.cast() = function(){
-                        alert("Dealt " + this.spellAura + " damage");
-                    }
+                    spell.on('click', function(){
+                        var aura = parseInt($(this).attr('aura'));
+                        alert("Dealt " + aura + " damage");
+                    });
                 }
                 //Healing spells
                 else if(spellType===1){
                     if(spellAura<20){
-                        spell.spellImage="assets/images/heal-royal-1.png";
+                        spell.attr('src','assets/images/heal-royal-1.png');
                     }
                     else if(spellAura>50){
-                        spell.spellImage="assets/images/heal-royal-3.png";
+                        spell.attr('src','assets/images/heal-royal-3.png');
                     }
                     else{
-                        spell.spellImage="assets/images/heal-royal-2.png";
+                        spell.attr('src','assets/images/heal-royal-2.png');
                     }
                     // Create the spell
-                    spell.cast() = function(){
-                        alert("Healed " + this.spellAura + " hit points");
-                    }
+                    spell.on('click', function(){
+                        var aura = parseInt($(this).attr('aura'));
+                        alert("Healed " + spellAura + " hit points");
+                    });
                 }
 
                 spells.push(spell);
                 spellOrNot = 0;
+                $('#spellbook').append(spell);
             }
         }
 
-        // Display the spells:
-        
+
+
 
         this.round = {difficulty, aura, bonesInRound, bonesOnScreen, spells, enemy};
     }
