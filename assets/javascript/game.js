@@ -74,7 +74,8 @@ function newGame() {
         bone.attr('src', boneType.image);
         bone.css('transform', 'rotate(' + boneType.rotation + 'deg)');
         bone.css('float,left');
-        bone.attr('width', '100px');
+        bone.css('margin','20px');
+        bone.attr('width', '150px');
         bone.attr('aura', boneType.aura);
         bone.on('click', function () {
 
