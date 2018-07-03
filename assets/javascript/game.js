@@ -1,7 +1,7 @@
+var newGameNext = true;
 var mode = 0;
 var aura = 0;
 var playerHP = 100;
-var enemyHP = 20;
 var roundCount = 1;
 var game = {};
 
@@ -10,6 +10,7 @@ function newGame() {
     var bonesInRound = [];
     var bonesOnScreen = [];
     var spells = [];
+    var enemy = {};
 
     // Decide how many bones of how many types to use in this round.
     var numberOfBoneTypes = 0;
@@ -68,6 +69,7 @@ function newGame() {
 
     // Choose how many of each bone to display, and displays them.
 
+    $('#boneyard').empty();
     for (var i = 0; i < numberOfBones; i++) {
         var boneType = bonesInRound[Math.floor(Math.random() * bonesInRound.length)];
         var bone = $('<img>');
@@ -75,7 +77,7 @@ function newGame() {
         bone.css('transform', 'rotate(' + boneType.rotation + 'deg)');
         bone.css('float,left');
         bone.css('margin','20px');
-        bone.attr('width', '150px');
+        bone.attr('width', '125px');
         bone.attr('aura', boneType.aura);
         bone.on('click', function () {
 
@@ -94,9 +96,15 @@ function newGame() {
                     spell.css('opacity', '1.0');
                 }
                 else{
-                    spell.css('border', 'solid 3px #0000');
+                    spell.css('border', 'solid 3px #0006');
                     spell.css('opacity', '0.5');
                 }
+            }
+
+            // Enemy attacks
+            if(game.enemy.enemyHP>0){
+                playerHP -= game.enemy.power;
+                $('#playerHP').text(playerHP);
             }
 
         });
@@ -104,25 +112,48 @@ function newGame() {
         bonesOnScreen.push(bone);
     }
 
+    var emptyBone = $('<img>');
+    emptyBone.attr('src','assets/images/empty.png');
+    emptyBone.css('float,left');
+    emptyBone.css('margin','20px');
+    emptyBone.attr('width','125px');
+    emptyBone.attr('height','125px');
+    $('#boneyard').append(emptyBone);
+
     // Create the spells available in this round.
 
     var spellAura = 0;
     var spellOrNot = 0;
     var stepsWithNoSpell = 0;
-    for (var i = 0; i < numberOfBones; i++) {
+    for (var i = 0; i < bonesOnScreen.length; ) {
         var index = Math.floor(Math.random() * bonesOnScreen.length);
         var bone = bonesOnScreen[index];
         bonesOnScreen.splice(index, 1);
         spellAura += parseInt(bone.attr('aura'));
         spellOrNot += Math.floor(Math.random() * 5) + stepsWithNoSpell;
-        if (spellOrNot > 5) {
+        if (spellOrNot > 5 || bonesOnScreen.length === 0) {
             var spellType = Math.floor(Math.random() * 2);
 
+            //Final spell, check if there are no damage dealing spells yet
+            if(bonesOnScreen.length===0){
+                var hasDamageSpell = false;
+                for (var i = 0; i < spells.length; i++) {
+                    var spell = spells[i];
+                    if(spell.attr('src').indexOf('fireball')!=-1){
+                        hasDamageSpell = true;
+                        break;
+                    }
+                }
+                if(!hasDamageSpell){
+                    spellType = 0;
+                }
+            }
+            
             var spell = $('<img>');
             spell.attr('width', '100px');
             spell.attr('aura', spellAura);
             spell.css('margin', '20px');
-            spell.css('border', 'solid 3px #0000');
+            spell.css('border', 'solid 3px #0006');
             spell.css('opacity', '0.5');
 
             //Damage spells
@@ -141,10 +172,15 @@ function newGame() {
                     var auraToCast = parseInt($(this).attr('aura'));
                     if(auraToCast===aura){
                         alert("Dealt " + auraToCast + " damage");
-                        enemyHP -= auraToCast;
-                        $('#enemyHP').text(enemyHP);
+                        game.enemy.enemyHP -= auraToCast;
+                        $('#enemyHP').text(game.enemy.enemyHP);
                         $(this).fadeOut();
                         $('#spell-' + auraToCast).fadeOut();
+                        $('#enemy').attr('src','assets/images/Skeleton Hit.gif');
+                        if(game.enemy.enemyHP<=0){
+                            $('#enemyHP').text('0');
+                            $('#enemy').attr('src', 'assets/images/Skeleton Dead.gif');
+                        }
                     }
                 });
             }
@@ -187,8 +223,52 @@ function newGame() {
 
         }
     }
+    var emptySpellCol = $('<div>');
+    emptySpellCol.css('float','left');
+    var emptySpell = $('<img>');
+    emptySpell.attr('src','assets/images/empty.png');
+    emptySpell.attr('width','140px');
+    emptySpell.attr('height','192px');
+    emptySpellCol.append(emptySpell);
+    emptySpellCol.append($('<p>'));
+    $('#spellbook').append(emptySpell);
 
-    return { difficulty, aura, bonesInRound, bonesOnScreen, spells, enemy };
+    // Create enemy
+    var maxDmgDealt=0;
+    var maxHpHealed=0;
+    for (var i = 0; i < spells.length; i++) {
+        var spell = spells[i];
+        if(spell.attr('src').indexOf('fireball')!=-1){
+            maxDmgDealt += parseInt(spell.attr('aura'));
+        }
+        else if(spell.attr('src').indexOf('heal')!=-1){
+            maxHpHealed += parseInt(spell.attr('aura'));
+        }
+    }
+
+    var enemyHP = Math.floor(Math.random()*maxDmgDealt);
+    console.log(enemyHP);
+    $('#enemyHP').text(enemyHP);
+    var power = Math.floor(maxHpHealed/numberOfBones) + 1;
+
+    var enemyName = 'Skeleton';
+    var sprite = 'assets/images/Skeleton Idle.gif';
+
+    $('#enemy').attr('src',sprite);
+    //$('#enemy').css('display','full');
+
+    enemy = {enemyName, enemyHP, power, sprite};
+
+    // Display all info
+    $('#aura').text(aura);
+    $('#playerHP').text(playerHP);
+    $('#round').text(roundCount);
+
+    
+
+    return { difficulty, bonesInRound, spells, enemy};
 }
 
-game = newGame();
+$('#clickMe').on('click',function(){
+    game = newGame();
+})
