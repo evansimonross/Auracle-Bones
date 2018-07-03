@@ -93,6 +93,10 @@ function newGame() {
                     spell.css('border', 'solid 3px yellow');
                     spell.css('opacity', '1.0');
                 }
+                else{
+                    spell.css('border', 'solid 3px #0000');
+                    spell.css('opacity', '0.5');
+                }
             }
 
         });
@@ -139,6 +143,8 @@ function newGame() {
                         alert("Dealt " + auraToCast + " damage");
                         enemyHP -= auraToCast;
                         $('#enemyHP').text(enemyHP);
+                        $(this).fadeOut();
+                        $('#spell-' + auraToCast).fadeOut();
                     }
                 });
             }
@@ -160,6 +166,8 @@ function newGame() {
                         alert("Healed " + auraToCast + " hit points");
                         playerHP += auraToCast;
                         $('#playerHP').text(playerHP);
+                        $(this).fadeOut();
+                        $('#spell-' + auraToCast).fadeOut();
                     }
                 });
             }
@@ -173,6 +181,7 @@ function newGame() {
             spellCol.append(spell);
             var spellAuraText = $('<p>');
             spellAuraText.text(spellAura);
+            spellAuraText.attr('id','spell-' + spellAura);
             spellCol.append(spellAuraText);
             $('#spellbook').append(spellCol);
 
