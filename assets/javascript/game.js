@@ -70,6 +70,10 @@ function newGame() {
     // Choose how many of each bone to display, and displays them.
 
     $('#boneyard').empty();
+    var bonesHeader = $('<h1>');
+    bonesHeader.text('Bones');
+    $('#boneyard').append(bonesHeader);
+    
     for (var i = 0; i < numberOfBones; i++) {
         var boneType = bonesInRound[Math.floor(Math.random() * bonesInRound.length)];
         var bone = $('<img>');
@@ -181,6 +185,11 @@ function newGame() {
                             $('#enemyHP').text('0');
                             $('#enemy').attr('src', 'assets/images/Skeleton Dead.gif');
                         }
+                        else{
+                            setTimeout(function(){
+                                $('#enemy').attr('src','assets/images/Skeleton Idle.gif');
+                            }, 1000);
+                        }
                     }
                 });
             }
@@ -205,6 +214,10 @@ function newGame() {
                         $(this).fadeOut();
                         $('#spell-' + auraToCast).fadeOut();
                     }
+                    $('#enemy').attr('src','assets/images/Skeleton React.gif');
+                    setTimeout(function(){
+                        $('#enemy').attr('src','assets/images/Skeleton Idle.gif');
+                    }, 300);
                 });
             }
 
@@ -260,7 +273,7 @@ function newGame() {
     enemy = {enemyName, enemyHP, power, sprite};
 
     // Display all info
-    $('#aura').text(aura);
+    $('#playerAura').text(aura);
     $('#playerHP').text(playerHP);
     $('#round').text(roundCount);
 
