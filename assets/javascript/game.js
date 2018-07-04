@@ -119,6 +119,17 @@ function newGame() {
 
                 }
                 $('#playerHP').text(playerHP);
+                $('#enemy').attr('src','assets/images/Skeleton Attack.gif');
+                $('#enemy').css('height','120px');
+                $('#enemy').css('margin-top','0px');
+                $('#enemy').css('transform', 'scaleX(-1) translateX(22px)');
+                setTimeout(function(){
+                    $('#enemy').attr('src','assets/images/Skeleton Idle.gif');
+                    $('#enemy').css('height','100px');
+                    $('#enemy').css('margin-top','36px');
+                    $('#enemy').css('transform', 'scaleX(-1) translateX(0px)');
+
+                },1800);
             }
 
             // Check if there any any moves remaining.
@@ -188,8 +199,8 @@ function newGame() {
                 spell.on('click', function () {
                     var auraToCast = parseInt($(this).attr('aura'));
                     if (auraToCast === aura) {
-                        if($('#enemyHP').text()==='0'){ 
-                            return; 
+                        if ($('#enemyHP').text() === '0') {
+                            return;
                         }
                         alert("Dealt " + auraToCast + " damage");
                         game.enemy.enemyHP -= auraToCast;
@@ -204,7 +215,7 @@ function newGame() {
                         else {
                             setTimeout(function () {
                                 $('#enemy').attr('src', 'assets/images/Skeleton Idle.gif');
-                            }, 1000);
+                            }, 600);
                         }
                     }
                     // Check if there any any moves remaining.
@@ -233,8 +244,8 @@ function newGame() {
                         $('#spell-' + auraToCast).fadeOut();
                     }
                     setTimeout(noMoreMoves(), 800);
-                    if($('#enemyHP').text()==='0') { 
-                        return; 
+                    if ($('#enemyHP').text() === '0') {
+                        return;
                     }
                     $('#enemy').attr('src', 'assets/images/Skeleton React.gif');
                     setTimeout(function () {
@@ -282,7 +293,7 @@ function newGame() {
         }
     }
 
-    var enemyHP = Math.floor(Math.random() * maxDmgDealt);
+    var enemyHP = Math.floor(Math.random() * maxDmgDealt) + 1;
     $('#enemyHP').text(enemyHP);
     var power = Math.floor(maxHpHealed / numberOfBones) + 1;
     var enemyName = 'Skeleton';
@@ -332,14 +343,14 @@ function isEmpty(imgContainer) {
     }
 }
 
-function noMoreMoves(){
-    if(isEmpty($('#boneyard img'))){
-        if(game.enemy.enemyHP<=0){
+function noMoreMoves() {
+    if (isEmpty($('#boneyard img'))) {
+        if (game.enemy.enemyHP <= 0) {
             console.log("YOU WIN");
             roundCount++;
             game = newGame();
         }
-        else{
+        else {
             console.log("YOU LOSE");
         }
     }
