@@ -73,7 +73,7 @@ function newGame() {
     var bonesHeader = $('<h1>');
     bonesHeader.text('Bones');
     $('#boneyard').append(bonesHeader);
-    
+
     for (var i = 0; i < numberOfBones; i++) {
         var boneType = bonesInRound[Math.floor(Math.random() * bonesInRound.length)];
         var bone = $('<img>');
@@ -260,17 +260,33 @@ function newGame() {
     }
 
     var enemyHP = Math.floor(Math.random()*maxDmgDealt);
-    console.log(enemyHP);
     $('#enemyHP').text(enemyHP);
     var power = Math.floor(maxHpHealed/numberOfBones) + 1;
-
     var enemyName = 'Skeleton';
-    var sprite = 'assets/images/Skeleton Idle.gif';
+    var sprite = 'assets/images/Skeleton Idle.gif'
+
+    //Make skeleton's color match bones
+    var enemyColor = 0;
+    switch(boneSet){
+        case 1:
+            enemyColor = 200;
+            break;
+        case 2:
+            break;
+        case 3:
+            enemyColor = 50;
+            break;
+        case 4:
+            enemyColor = 100;
+            break;
+        default: 
+            console.log("Bone set is not recognized.")
+    }
 
     $('#enemy').attr('src',sprite);
-    //$('#enemy').css('display','full');
+    $('#enemy').css('filter','hue-rotate(' + enemyColor + 'deg)');
 
-    enemy = {enemyName, enemyHP, power, sprite};
+    enemy = {enemyName, enemyHP, power, sprite, enemyColor};
 
     // Display all info
     $('#playerAura').text(aura);
