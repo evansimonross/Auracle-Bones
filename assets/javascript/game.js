@@ -348,9 +348,12 @@ function noMoreMoves() {
         if (game.enemy.enemyHP <= 0) {
             console.log("YOU WIN");
             roundCount++;
-            game = newGame();
+            setTimeout(function(){
+                game=newGame();
+            },3000);
         }
         else {
+            // Gameover State
             console.log("YOU LOSE");
         }
     }
