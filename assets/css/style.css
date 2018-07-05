@@ -105,8 +105,10 @@ hr{
 }
 
 #message{
-    display: relative;
-    top: 100;
-    margin-left: auto;
-    margin-right: auto;
+    font-size: 10em;
+    position: absolute;
+    top: 40%;
+    width: 100%;
+    text-align: center;
+    z-index: 1;
 }

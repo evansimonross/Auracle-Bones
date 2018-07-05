@@ -38,7 +38,7 @@ function newGame() {
             break;
         case 6:
             numberOfBoneTypes = 4;
-            numbefOfBones = 15;
+            numberOfBones = 15;
             break;
         case 7:
             numberOfBoneTypes = 4;
@@ -95,7 +95,7 @@ function newGame() {
         bone.attr('aura', boneType.aura);
         bone.on('click', function () {
             // Do not allow overlapping animations
-            if(animating){
+            if (animating) {
                 return;
             }
             animating = true;
@@ -129,13 +129,6 @@ function newGame() {
 
             // Enemy attacks
             if (game.enemy.enemyHP > 0) {
-                playerHP -= game.enemy.power;
-                if (playerHP < 0) {
-                    playerHP = 0;
-                    $('#player').attr('src','assets/images/wizard-dead.gif');
-                    message("GAME OVER");
-                }
-                $('#playerHP').text(playerHP);
                 $('#enemy').attr('src', 'assets/images/Skeleton Attack.gif');
                 $('#enemy').css('height', '120px');
                 $('#enemy').css('margin-top', '0px');
@@ -148,6 +141,15 @@ function newGame() {
                     animating = false;
                 }, 1800);
                 setTimeout(function () {
+                    playerHP -= game.enemy.power;
+                    if (playerHP < 0) {
+                        playerHP = 0;
+                        $('#player').attr('src', 'assets/images/wizard-dead.gif');
+                        setTimeout(function(){
+                            message("GAME OVER");
+                        },1000);
+                    }
+                    $('#playerHP').text(playerHP);
                     $('#playerText').text("-" + game.enemy.power);
                     $('#playerText').css('color', 'rgb(255,60,60)');
                     $('#playerText').animate({
@@ -159,6 +161,9 @@ function newGame() {
                         $('#playerText').css('opacity', '100');
                     });
                 }, 800);
+            }
+            else{
+                animating = false;
             }
 
             // Check if there any any moves remaining.
@@ -226,13 +231,15 @@ function newGame() {
                 }
                 // Create the spell
                 spell.on('click', function () {
-                    if(animating){
+                    if (animating) {
                         return;
                     }
-                    animating = true;
                     var auraToCast = parseInt($(this).attr('aura'));
                     if (auraToCast === aura) {
+                        animating = true;
                         if ($('#enemyHP').text() === '0') {
+                            animating = false;
+                            setTimeout(noMoreMoves(), 800);
                             return;
                         }
                         game.enemy.enemyHP -= auraToCast;
@@ -249,10 +256,10 @@ function newGame() {
                             else {
                                 $('#enemyHP').text(game.enemy.enemyHP);
                                 $('#enemy').attr('src', 'assets/images/Skeleton Hit.gif');
-                                setTimeout(function(){
+                                setTimeout(function () {
                                     $('#enemy').attr('src', 'assets/images/Skeleton Idle.gif');
                                     animating = false;
-                                },800);
+                                }, 800);
                             }
                             $('#enemyText').text("-" + auraToCast);
                             $('#enemyText').animate({
@@ -262,6 +269,7 @@ function newGame() {
                                 $('#enemyText').text("");
                                 $('#enemyText').css('top', '0');
                                 $('#enemyText').css('opacity', '100');
+                                animating = false;
                             });
                         }, 1200);
                     }
@@ -282,11 +290,12 @@ function newGame() {
                 }
                 // Create the spell
                 spell.on('click', function () {
-                    if(animating){
+                    if (animating) {
                         return;
                     }
                     var auraToCast = parseInt($(this).attr('aura'));
                     if (auraToCast === aura) {
+                        animating = true;
                         $(this).fadeOut();
                         $('#spell-' + auraToCast).fadeOut();
                         $('#player').attr('src', 'assets/images/wizard-heal.gif');
@@ -410,11 +419,17 @@ function isEmpty(imgContainer) {
 function noMoreMoves() {
     if (isEmpty($('#boneyard img'))) {
         if (game.enemy.enemyHP <= 0) {
-            message("ROUND " + (roundCount + 1));
-            roundCount++;
-            setTimeout(function () {
-                game = newGame();
-            }, 3000);
+            var waitTime = 1200;
+            if(animating){
+                waitTime = 3000;
+            }
+            setTimeout(function(){
+                message("ROUND " + (roundCount + 1));
+                roundCount++;
+                setTimeout(function () {
+                    game = newGame();
+                }, 2000);
+            }, waitTime);
         }
         else {
             message("GAME OVER");
@@ -423,15 +438,15 @@ function noMoreMoves() {
 }
 
 function message(messageText) {
-    var message = $('<h1>');
-    message.text(messageText);
-    message.attr('id', 'message');
-    $('#boneyard').append(message);
+    $('#message').text(messageText);
     setTimeout(function () {
-        $(message).animate({
-            top: -100,
+        $('#message').animate({
+            top: '15%',
             opacity: 0
-        }, 2000, 'linear', function () {
+        }, 1000, 'linear', function () {
+            $('#message').text("");
+            $('#message').css('top', '40%');
+            $('#message').css('opacity','100');
         });
     }, 800);
 }
