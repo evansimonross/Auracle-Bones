@@ -73,7 +73,7 @@ function newGame() {
 
     // Display player
     var player = $('#player');
-    player.attr('src', 'assets/images/male-wizard-idle.gif');
+    player.attr('src', 'assets/images/wizard-idle.gif');
 
     // Choose how many of each bone to display, and displays them.
 
@@ -219,9 +219,9 @@ function newGame() {
                         game.enemy.enemyHP -= auraToCast;
                         $(this).fadeOut();
                         $('#spell-' + auraToCast).fadeOut();
-                        $('#player').attr('src', 'assets/images/male-wizard-attack.gif');
+                        $('#player').attr('src', 'assets/images/wizard-attack.gif');
                         setTimeout(function () {
-                            $('#player').attr('src', 'assets/images/male-wizard-idle.gif');
+                            $('#player').attr('src', 'assets/images/wizard-idle.gif');
                             if (game.enemy.enemyHP <= 0) {
                                 $('#enemyHP').text('0');
                                 $('#enemy').attr('src', 'assets/images/Skeleton Dead.gif');
@@ -264,9 +264,9 @@ function newGame() {
                         $('#playerHP').text(playerHP);
                         $(this).fadeOut();
                         $('#spell-' + auraToCast).fadeOut();
-                        $('#player').attr('src', 'assets/images/male-wizard-heal.gif');
+                        $('#player').attr('src', 'assets/images/wizard-heal.gif');
                         setTimeout(function () {
-                            $('#player').attr('src', 'assets/images/male-wizard-idle.gif');
+                            $('#player').attr('src', 'assets/images/wizard-idle.gif');
                             $('#playerText').text("+" + auraToCast);
                             $('#playerText').css('color','green');
                             $('#playerText').animate({
