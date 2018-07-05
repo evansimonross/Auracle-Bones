@@ -3,6 +3,7 @@ var aura = 0;
 var playerHP = 100;
 var roundCount = 1;
 var game = {};
+var animating = false;
 
 function newGame() {
     var bonesInRound = [];
@@ -93,7 +94,11 @@ function newGame() {
         bone.attr('width', '125px');
         bone.attr('aura', boneType.aura);
         bone.on('click', function () {
-
+            // Do not allow overlapping animations
+            if(animating){
+                return;
+            }
+            animating = true;
             // Increase aura and animate the bone's disappearance.
             aura += parseInt($(this).attr('aura'));
             $('#auraText').text("+" + $(this).attr('aura'));
@@ -127,8 +132,8 @@ function newGame() {
                 playerHP -= game.enemy.power;
                 if (playerHP < 0) {
                     playerHP = 0;
-                    // GAME OVER STATE
-
+                    $('#player').attr('src','assets/images/wizard-dead.gif');
+                    message("GAME OVER");
                 }
                 $('#playerHP').text(playerHP);
                 $('#enemy').attr('src', 'assets/images/Skeleton Attack.gif');
@@ -140,6 +145,7 @@ function newGame() {
                     $('#enemy').css('height', '100px');
                     $('#enemy').css('margin-top', '36px');
                     $('#enemy').css('transform', 'scaleX(-1) translateX(0px)');
+                    animating = false;
                 }, 1800);
                 setTimeout(function () {
                     $('#playerText').text("-" + game.enemy.power);
@@ -220,6 +226,10 @@ function newGame() {
                 }
                 // Create the spell
                 spell.on('click', function () {
+                    if(animating){
+                        return;
+                    }
+                    animating = true;
                     var auraToCast = parseInt($(this).attr('aura'));
                     if (auraToCast === aura) {
                         if ($('#enemyHP').text() === '0') {
@@ -234,10 +244,15 @@ function newGame() {
                             if (game.enemy.enemyHP <= 0) {
                                 $('#enemyHP').text('0');
                                 $('#enemy').attr('src', 'assets/images/Skeleton Dead.gif');
+                                animating = false;
                             }
                             else {
                                 $('#enemyHP').text(game.enemy.enemyHP);
                                 $('#enemy').attr('src', 'assets/images/Skeleton Hit.gif');
+                                setTimeout(function(){
+                                    $('#enemy').attr('src', 'assets/images/Skeleton Idle.gif');
+                                    animating = false;
+                                },800);
                             }
                             $('#enemyText').text("-" + auraToCast);
                             $('#enemyText').animate({
@@ -267,6 +282,9 @@ function newGame() {
                 }
                 // Create the spell
                 spell.on('click', function () {
+                    if(animating){
+                        return;
+                    }
                     var auraToCast = parseInt($(this).attr('aura'));
                     if (auraToCast === aura) {
                         $(this).fadeOut();
@@ -285,6 +303,7 @@ function newGame() {
                                 $('#playerText').text("");
                                 $('#playerText').css('top', '0');
                                 $('#playerText').css('opacity', '100');
+                                animating = false;
                             });
                         }, 1200);
                     }
