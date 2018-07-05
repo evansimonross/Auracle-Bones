@@ -61,10 +61,20 @@ hr{
     margin-right: auto;
     margin-top: 36px;
 }
+#auraText{
+    position:relative;
+    margin-top:30px;
+    display:block;
+    color: rgb(60, 60, 255);
+    right: 25px;
+    -webkit-text-stroke-width: 1px;
+    -webkit-text-stroke-color: #e1e2b6;
+    font-weight: 700;
+}
 
 #playerText{
     position:relative;
-    margin-top:60px;
+    margin-top:30px;
     display:block;
     left: 175px;
     -webkit-text-stroke-width: 1px;
@@ -76,7 +86,7 @@ hr{
     position:relative;
     margin-top:60px;
     display:block;
-    color: red;
+    color: rgb(255, 60, 60);
     right: 175px;
     -webkit-text-stroke-width: 1px;
     -webkit-text-stroke-color: #e1e2b6;
@@ -91,4 +101,11 @@ hr{
 
 .desc{
     font-size:1em;
+}
+
+#message{
+    display: relative;
+    top: 100;
+    margin-left: auto;
+    margin-right: auto;
 }

@@ -96,6 +96,15 @@ function newGame() {
 
             // Increase aura and animate the bone's disappearance.
             aura += parseInt($(this).attr('aura'));
+            $('#auraText').text("+" + $(this).attr('aura'));
+            $('#auraText').animate({
+                top: -100,
+                opacity: 0
+            }, 800, 'linear', function () {
+                $('#auraText').text("");
+                $('#auraText').css('top', '0');
+                $('#auraText').css('opacity', '100');
+            });
             $('#playerAura').text(aura);
             $(this).fadeOut("slow");
 
@@ -134,11 +143,11 @@ function newGame() {
                 }, 1800);
                 setTimeout(function () {
                     $('#playerText').text("-" + game.enemy.power);
-                    $('#playerText').css('color','red');
+                    $('#playerText').css('color', 'rgb(255,60,60)');
                     $('#playerText').animate({
                         top: -100,
                         opacity: 0
-                    }, 1000, 'linear', function () {
+                    }, 800, 'linear', function () {
                         $('#playerText').text("");
                         $('#playerText').css('top', '0');
                         $('#playerText').css('opacity', '100');
@@ -234,7 +243,7 @@ function newGame() {
                             $('#enemyText').animate({
                                 top: -100,
                                 opacity: 0
-                            }, 1000, 'linear', function () {
+                            }, 800, 'linear', function () {
                                 $('#enemyText').text("");
                                 $('#enemyText').css('top', '0');
                                 $('#enemyText').css('opacity', '100');
@@ -260,19 +269,19 @@ function newGame() {
                 spell.on('click', function () {
                     var auraToCast = parseInt($(this).attr('aura'));
                     if (auraToCast === aura) {
-                        playerHP += auraToCast;
-                        $('#playerHP').text(playerHP);
                         $(this).fadeOut();
                         $('#spell-' + auraToCast).fadeOut();
                         $('#player').attr('src', 'assets/images/wizard-heal.gif');
                         setTimeout(function () {
+                            playerHP += auraToCast;
+                            $('#playerHP').text(playerHP);
                             $('#player').attr('src', 'assets/images/wizard-idle.gif');
                             $('#playerText').text("+" + auraToCast);
-                            $('#playerText').css('color','green');
+                            $('#playerText').css('color', 'rgb(60,60,255)');
                             $('#playerText').animate({
                                 top: -100,
                                 opacity: 0
-                            }, 1000, 'linear', function () {
+                            }, 800, 'linear', function () {
                                 $('#playerText').text("");
                                 $('#playerText').css('top', '0');
                                 $('#playerText').css('opacity', '100');
@@ -382,17 +391,30 @@ function isEmpty(imgContainer) {
 function noMoreMoves() {
     if (isEmpty($('#boneyard img'))) {
         if (game.enemy.enemyHP <= 0) {
-            console.log("YOU WIN");
+            message("ROUND " + (roundCount + 1));
             roundCount++;
             setTimeout(function () {
                 game = newGame();
             }, 3000);
         }
         else {
-            // Gameover State
-            console.log("YOU LOSE");
+            message("GAME OVER");
         }
     }
+}
+
+function message(messageText) {
+    var message = $('<h1>');
+    message.text(messageText);
+    message.attr('id', 'message');
+    $('#boneyard').append(message);
+    setTimeout(function () {
+        $(message).animate({
+            top: -100,
+            opacity: 0
+        }, 2000, 'linear', function () {
+        });
+    }, 800);
 }
 
 $('#clickMe').on('click', function () {
