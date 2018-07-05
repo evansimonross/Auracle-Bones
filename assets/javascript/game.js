@@ -71,6 +71,10 @@ function newGame() {
         bonesInRound.push({ image, rotation, aura: boneAura });
     }
 
+    // Display player
+    var player = $('#player');
+    player.attr('src', 'assets/images/male-wizard-idle.gif');
+
     // Choose how many of each bone to display, and displays them.
 
     $('#boneyard').empty();
@@ -93,7 +97,6 @@ function newGame() {
             // Increase aura and animate the bone's disappearance.
             aura += parseInt($(this).attr('aura'));
             $('#playerAura').text(aura);
-            // $(this).on('click,',function(){});
             $(this).fadeOut("slow");
 
             // Highlights a spell if the player's aura matches the spell's aura.
@@ -119,17 +122,28 @@ function newGame() {
 
                 }
                 $('#playerHP').text(playerHP);
-                $('#enemy').attr('src','assets/images/Skeleton Attack.gif');
-                $('#enemy').css('height','120px');
-                $('#enemy').css('margin-top','0px');
+                $('#enemy').attr('src', 'assets/images/Skeleton Attack.gif');
+                $('#enemy').css('height', '120px');
+                $('#enemy').css('margin-top', '0px');
                 $('#enemy').css('transform', 'scaleX(-1) translateX(22px)');
-                setTimeout(function(){
-                    $('#enemy').attr('src','assets/images/Skeleton Idle.gif');
-                    $('#enemy').css('height','100px');
-                    $('#enemy').css('margin-top','36px');
+                setTimeout(function () {
+                    $('#enemy').attr('src', 'assets/images/Skeleton Idle.gif');
+                    $('#enemy').css('height', '100px');
+                    $('#enemy').css('margin-top', '36px');
                     $('#enemy').css('transform', 'scaleX(-1) translateX(0px)');
-
-                },1800);
+                }, 1800);
+                setTimeout(function () {
+                    $('#playerText').text("-" + game.enemy.power);
+                    $('#playerText').css('color','red');
+                    $('#playerText').animate({
+                        top: -100,
+                        opacity: 0
+                    }, 1000, 'linear', function () {
+                        $('#playerText').text("");
+                        $('#playerText').css('top', '0');
+                        $('#playerText').css('opacity', '100');
+                    });
+                }, 800);
             }
 
             // Check if there any any moves remaining.
@@ -202,21 +216,30 @@ function newGame() {
                         if ($('#enemyHP').text() === '0') {
                             return;
                         }
-                        alert("Dealt " + auraToCast + " damage");
                         game.enemy.enemyHP -= auraToCast;
-                        $('#enemyHP').text(game.enemy.enemyHP);
                         $(this).fadeOut();
                         $('#spell-' + auraToCast).fadeOut();
-                        $('#enemy').attr('src', 'assets/images/Skeleton Hit.gif');
-                        if (game.enemy.enemyHP <= 0) {
-                            $('#enemyHP').text('0');
-                            $('#enemy').attr('src', 'assets/images/Skeleton Dead.gif');
-                        }
-                        else {
-                            setTimeout(function () {
-                                $('#enemy').attr('src', 'assets/images/Skeleton Idle.gif');
-                            }, 600);
-                        }
+                        $('#player').attr('src', 'assets/images/male-wizard-attack.gif');
+                        setTimeout(function () {
+                            $('#player').attr('src', 'assets/images/male-wizard-idle.gif');
+                            if (game.enemy.enemyHP <= 0) {
+                                $('#enemyHP').text('0');
+                                $('#enemy').attr('src', 'assets/images/Skeleton Dead.gif');
+                            }
+                            else {
+                                $('#enemyHP').text(game.enemy.enemyHP);
+                                $('#enemy').attr('src', 'assets/images/Skeleton Hit.gif');
+                            }
+                            $('#enemyText').text("-" + auraToCast);
+                            $('#enemyText').animate({
+                                top: -100,
+                                opacity: 0
+                            }, 1000, 'linear', function () {
+                                $('#enemyText').text("");
+                                $('#enemyText').css('top', '0');
+                                $('#enemyText').css('opacity', '100');
+                            });
+                        }, 1200);
                     }
                     // Check if there any any moves remaining.
                     setTimeout(noMoreMoves(), 800);
@@ -237,11 +260,24 @@ function newGame() {
                 spell.on('click', function () {
                     var auraToCast = parseInt($(this).attr('aura'));
                     if (auraToCast === aura) {
-                        alert("Healed " + auraToCast + " hit points");
                         playerHP += auraToCast;
                         $('#playerHP').text(playerHP);
                         $(this).fadeOut();
                         $('#spell-' + auraToCast).fadeOut();
+                        $('#player').attr('src', 'assets/images/male-wizard-heal.gif');
+                        setTimeout(function () {
+                            $('#player').attr('src', 'assets/images/male-wizard-idle.gif');
+                            $('#playerText').text("+" + auraToCast);
+                            $('#playerText').css('color','green');
+                            $('#playerText').animate({
+                                top: -100,
+                                opacity: 0
+                            }, 1000, 'linear', function () {
+                                $('#playerText').text("");
+                                $('#playerText').css('top', '0');
+                                $('#playerText').css('opacity', '100');
+                            });
+                        }, 1200);
                     }
                     setTimeout(noMoreMoves(), 800);
                     if ($('#enemyHP').text() === '0') {
@@ -348,9 +384,9 @@ function noMoreMoves() {
         if (game.enemy.enemyHP <= 0) {
             console.log("YOU WIN");
             roundCount++;
-            setTimeout(function(){
-                game=newGame();
-            },3000);
+            setTimeout(function () {
+                game = newGame();
+            }, 3000);
         }
         else {
             // Gameover State

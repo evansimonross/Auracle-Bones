@@ -42,6 +42,15 @@ hr{
     padding: 0;
 }
 
+#player{
+    height: 76px;
+    image-rendering: pixelated;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 60px;
+}
+
 #enemy{
     transform: scaleX(-1);
     height: 100px;
@@ -51,7 +60,27 @@ hr{
     margin-left: auto;
     margin-right: auto;
     margin-top: 36px;
-    /* display: none; */
+}
+
+#playerText{
+    position:relative;
+    margin-top:60px;
+    display:block;
+    left: 175px;
+    -webkit-text-stroke-width: 1px;
+    -webkit-text-stroke-color: #e1e2b6;
+    font-weight: 700;
+}
+
+#enemyText{
+    position:relative;
+    margin-top:60px;
+    display:block;
+    color: red;
+    right: 175px;
+    -webkit-text-stroke-width: 1px;
+    -webkit-text-stroke-color: #e1e2b6;
+    font-weight: 700;
 }
 
 #clickMe{
