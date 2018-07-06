@@ -1,9 +1,9 @@
-var gameState = 0;
 var aura = 0;
 var playerHP = 100;
 var roundCount = 1;
 var game = {};
 var animating = false;
+var changingLevels = false;
 
 function newGame() {
     var bonesInRound = [];
@@ -145,9 +145,10 @@ function newGame() {
                     if (playerHP < 0) {
                         playerHP = 0;
                         $('#player').attr('src', 'assets/images/wizard-dead.gif');
-                        setTimeout(function(){
+                        setTimeout(function () {
+                            animating = true;
                             message("GAME OVER");
-                        },1000);
+                        }, 1000);
                     }
                     $('#playerHP').text(playerHP);
                     $('#playerText').text("-" + game.enemy.power);
@@ -162,7 +163,7 @@ function newGame() {
                     });
                 }, 800);
             }
-            else{
+            else {
                 animating = false;
             }
 
@@ -238,8 +239,10 @@ function newGame() {
                     if (auraToCast === aura) {
                         animating = true;
                         if ($('#enemyHP').text() === '0') {
-                            animating = false;
-                            setTimeout(noMoreMoves(), 800);
+                            setTimeout(function () {
+                                noMoreMoves();
+                                animating = false;
+                            }, 800);
                             return;
                         }
                         game.enemy.enemyHP -= auraToCast;
@@ -248,17 +251,17 @@ function newGame() {
                         $('#player').attr('src', 'assets/images/wizard-attack.gif');
                         setTimeout(function () {
                             $('#player').attr('src', 'assets/images/wizard-idle.gif');
+                        }, 2000);
+                        setTimeout(function () {
                             if (game.enemy.enemyHP <= 0) {
                                 $('#enemyHP').text('0');
                                 $('#enemy').attr('src', 'assets/images/Skeleton Dead.gif');
-                                animating = false;
                             }
                             else {
                                 $('#enemyHP').text(game.enemy.enemyHP);
                                 $('#enemy').attr('src', 'assets/images/Skeleton Hit.gif');
                                 setTimeout(function () {
                                     $('#enemy').attr('src', 'assets/images/Skeleton Idle.gif');
-                                    animating = false;
                                 }, 800);
                             }
                             $('#enemyText').text("-" + auraToCast);
@@ -271,7 +274,7 @@ function newGame() {
                                 $('#enemyText').css('opacity', '100');
                                 animating = false;
                             });
-                        }, 1200);
+                        }, 1000);
                     }
                     // Check if there any any moves remaining.
                     setTimeout(noMoreMoves(), 800);
@@ -314,16 +317,18 @@ function newGame() {
                                 $('#playerText').css('opacity', '100');
                                 animating = false;
                             });
-                        }, 1200);
+                            if (('#enemy').text() != '0') {
+                                $('#enemy').attr('src', 'assets/images/Skeleton React.gif');
+                                setTimeout(function () {
+                                    $('#enemy').attr('src', 'assets/images/Skeleton Idle.gif');
+                                }, 300);
+                            }
+                        }, 2000);
                     }
                     setTimeout(noMoreMoves(), 800);
                     if ($('#enemyHP').text() === '0') {
                         return;
                     }
-                    $('#enemy').attr('src', 'assets/images/Skeleton React.gif');
-                    setTimeout(function () {
-                        $('#enemy').attr('src', 'assets/images/Skeleton Idle.gif');
-                    }, 300);
 
                 });
             }
@@ -396,6 +401,8 @@ function newGame() {
     enemy = { enemyName, enemyHP, power, sprite, enemyColor };
 
     // Display all info
+    changingLevels = false;
+    animating = false;
     aura = 0;
     $('#playerAura').text(aura);
     $('#playerHP').text(playerHP);
@@ -419,11 +426,15 @@ function isEmpty(imgContainer) {
 function noMoreMoves() {
     if (isEmpty($('#boneyard img'))) {
         if (game.enemy.enemyHP <= 0) {
+            if (changingLevels) {
+                return;
+            }
+            changingLevels = true;
             var waitTime = 1200;
-            if(animating){
+            if (animating) {
                 waitTime = 3000;
             }
-            setTimeout(function(){
+            setTimeout(function () {
                 message("ROUND " + (roundCount + 1));
                 roundCount++;
                 setTimeout(function () {
@@ -432,7 +443,11 @@ function noMoreMoves() {
             }, waitTime);
         }
         else {
-            message("GAME OVER");
+            aura = 0;
+            animating = true;
+            setTimeout(function () {
+                message("GAME OVER");
+            }, 1000);
         }
     }
 }
@@ -446,7 +461,7 @@ function message(messageText) {
         }, 1000, 'linear', function () {
             $('#message').text("");
             $('#message').css('top', '40%');
-            $('#message').css('opacity','100');
+            $('#message').css('opacity', '100');
         });
     }, 800);
 }
