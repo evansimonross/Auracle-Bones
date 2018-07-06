@@ -148,6 +148,7 @@ function newGame() {
                         setTimeout(function () {
                             animating = true;
                             message("GAME OVER");
+                            setNewGame();
                         }, 1000);
                     }
                     $('#playerHP').text(playerHP);
@@ -317,7 +318,7 @@ function newGame() {
                                 $('#playerText').css('opacity', '100');
                                 animating = false;
                             });
-                            if (('#enemy').text() != '0') {
+                            if (('#enemyHP').text() != '0') {
                                 $('#enemy').attr('src', 'assets/images/Skeleton React.gif');
                                 setTimeout(function () {
                                     $('#enemy').attr('src', 'assets/images/Skeleton Idle.gif');
@@ -447,6 +448,7 @@ function noMoreMoves() {
             animating = true;
             setTimeout(function () {
                 message("GAME OVER");
+                setNewGame();
             }, 1000);
         }
     }
@@ -466,6 +468,25 @@ function message(messageText) {
     }, 800);
 }
 
-$('#clickMe').on('click', function () {
-    game = newGame();
-})
+function setNewGame(){
+    $('#boneyard').empty();
+    var bonesHeader = $('<h1>');
+    bonesHeader.text('Bones');
+    var bone = $('<img>');
+    bone.attr('id','clickMe');
+    bone.attr('src','assets/images/bone2c.png');
+    bone.attr('width','125px');
+    var text = $('<p>');
+    text.text('Click the bone to begin a new game...')
+    $('#boneyard').append(bonesHeader);
+    $('#boneyard').append(bone);
+    $('#boneyard').append($('<br>'));
+    $('#boneyard').append(text);
+    $('#clickMe').on('click', function () {
+        game = newGame();
+    });
+}
+
+setNewGame();
+
+//$(document).ready( setNewGame() );
