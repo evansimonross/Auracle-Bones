@@ -111,7 +111,7 @@ hr{
 #message{
     font-size: 10em;
     position: absolute;
-    top: 40%;
+    top: 50%;
     width: 100%;
     text-align: center;
     z-index: 1;

@@ -330,7 +330,7 @@ function newGame() {
 
     var enemyHP = Math.floor(Math.random() * maxDmgDealt) + 1;
     $('#enemyHP').text(enemyHP);
-    var power = Math.floor(maxHpHealed / numberOfBones) + 1;
+    var power = Math.floor(Math.random()*((playerHP/2) + maxHpHealed) / numberOfBones)+1;
     var enemyName = 'Skeleton';
     var sprite = 'assets/images/Skeleton Idle.gif'
 
@@ -412,11 +412,11 @@ function message(messageText) {
     $('#message').text(messageText);
     setTimeout(function () {
         $('#message').animate({
-            top: '15%',
+            top: '20%',
             opacity: 0
         }, 1000, 'linear', function () {
             $('#message').text("");
-            $('#message').css('top', '40%');
+            $('#message').css('top', '50%');
             $('#message').css('opacity', '100');
         });
     }, 800);
@@ -424,8 +424,11 @@ function message(messageText) {
 
 function setNewGame(){
     aura = 0;
+    $('#playerAura').text(' ');
     playerHP = 100; 
+    $('#playerHP').text(' ');
     roundCount = 1;
+    $('#round').text(' ');
     animating = false;
     changingLevels = false;
 
