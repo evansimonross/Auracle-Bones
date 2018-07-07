@@ -143,6 +143,13 @@ function newGame() {
 
     // Create the spells available in this round.
 
+    var spellsHeader = $('<h1>');
+    spellsHeader.text('Spells');
+    $('#spellbook').append(spellsHeader);
+    var spellRow = $('<div>');
+    spellRow.css('overflow','hidden');
+    $('#spellbook').append(spellRow);
+
     var spellAura = 0;
     var spellOrNot = 0;
     var stepsWithNoSpell = 0;
@@ -301,20 +308,12 @@ function newGame() {
             var spellAuraText = $('<p>');
             spellAuraText.text(spellAura);
             spellAuraText.attr('id', 'spell-' + spellAura);
+            spellAuraText.css('margin','0px');
             spellCol.append(spellAuraText);
-            $('#spellbook').append(spellCol);
+            spellRow.append(spellCol);
 
         }
     }
-    var emptySpellCol = $('<div>');
-    emptySpellCol.css('float', 'left');
-    var emptySpell = $('<img>');
-    emptySpell.attr('src', 'assets/images/empty.png');
-    emptySpell.attr('width', '140px');
-    emptySpell.attr('height', '192px');
-    emptySpellCol.append(emptySpell);
-    emptySpellCol.append($('<p>'));
-    $('#spellbook').append(emptySpell);
 
     // Create enemy
     var maxDmgDealt = 0;

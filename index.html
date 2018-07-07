@@ -15,61 +15,62 @@
 <body>
     <div class="container-fluid">
         <div class="row">
-            <div class="col-md-1"></div>
-            <div class="game col-md-7">
+            <div class="col-lg-8">
+                <div class="game">
                     <h1 id="message"></h1>
-                <div class="row">
-                    <div class="col-3">
-                        <h1>Aura</h1>
-                        <p id="playerAura">&nbsp;</p>
-                        <p id="auraText"></p>
-                        <p id="playerText"></p>
+                    <div class="row">
+                        <div class="col-3">
+                            <h1>Aura</h1>
+                            <p id="playerAura">&nbsp;</p>
+                            <p id="auraText"></p>
+                            <p id="playerText"></p>
+                        </div>
+                        <div class="col-3">
+                            <h1>Player</h1>
+                            <p id="playerHP">&nbsp;</p>
+                            <img id="player">
+                        </div>
+                        <div class="col-3">
+                            <h1>Enemy</h1>
+                            <p id="enemyHP">&nbsp;</p>
+                            <img id="enemy">
+                        </div>
+                        <div class="col-3">
+                            <h1>Round</h1>
+                            <p id="round">&nbsp;</p>
+                            <p id="enemyText"></p>
+                        </div>
                     </div>
-                    <div class="col-3">
-                        <h1>Player</h1>
-                        <p id="playerHP">&nbsp;</p>
-                        <img id="player">
-                    </div>
-                    <div class="col-3">
-                        <h1>Enemy</h1>
-                        <p id="enemyHP">&nbsp;</p>
-                        <img id="enemy">
-                    </div>
-                    <div class="col-3">
-                        <h1>Round</h1>
-                        <p id="round">&nbsp;</p>
-                        <p id="enemyText"></p>
-                    </div>
-                </div>
-                <hr>
-                <div id="boneyard">
-                        <h1>Bones</h1>
+                    <hr>
+                    <div id="boneyard">
+                        <h1>About the Game</h1>
                         <img id="clickMe" src="assets/images/bone2c.png" width="125px">
                         <p>(Click the bone to begin...)</p>
+                    </div>
                 </div>
-                <hr>
-                <h1>Spells</h1>
-                <div id="spellbook">
+            </div>
 
+            <div class="col-lg-4">
+                <div class="game">
+                    <img class="header-img" src="assets/images/header.png">
+                    <hr>
+                    <div id="spellbook">
+                        <p class="desc">You are an *auracle*, a practitioner of the ancient art of channeling the latent life energy in *bones*
+                            into a magical substance called *aura*. Different types of bones have different stores of life
+                            energy. As you draw aura from one type of bone, your aura meter will increase by a specific number.
+                        </p>
+                        <p class="desc">Within each round, bones of the same shape will grant the same amount of aura. You'll need to reach
+                            precise aura levels to perform actions, so pay close attention to the shape of the bones and
+                            the amount your aura meter increases by. </p>
+                        <p class="desc">If your aura level reaches a precise value, you can cast a magical spell. The spells that can be
+                            performed are listed at the bottom of the screen. One type of spell is a damage-dealing spell.
+                            Your enemy's hit points will be decreased by the energy value of the spell. Another type of spell
+                            is a self-heal. Your hit points will be raised by the energy value of the spell. </p>
+                        <p class="desc"> Choose which bones to draw energy from wisely. If you overshoot the amount of aura needed for a specific
+                            spell, you will miss your chance to cast it.</p>
+                    </div>
                 </div>
             </div>
-            <div class="game col-md-3">
-                <img class="header-img" src="assets/images/header.png">
-                <hr>
-                <p class="desc">You are an *auracle*, a practitioner of the ancient art of channeling the latent life energy in *bones*
-                        into a magical substance called *aura*. Different types of bones have different stores of life energy. As you draw aura
-                        from one type of bone, your aura meter will increase by a specific number. </p>
-                    <p class="desc">Within each round, bones of the same shape will grant the same amount of aura. You'll need to reach precise
-                        aura levels to perform actions, so pay close attention to the shape of the bones and the amount your
-                        aura meter increases by. </p>
-                    <p class="desc">If your aura level reaches a precise value, you can cast a magical spell. The spells that can be performed
-                        are listed at the bottom of the screen. One type of spell is a damage-dealing spell. Your enemy's
-                        hit points will be decreased by the energy value of the spell. Another type of spell is a self-heal.
-                        Your hit points will be raised by the energy value of the spell. </p>
-                    <p class="desc"> Choose which bones to draw energy from wisely. If you overshoot the amount of aura needed for a specific
-                        spell, you will miss your chance to cast it.</p>
-            </div>
-            <div class="col-md-1"></div>
         </div>
     </div>
 
