@@ -153,6 +153,8 @@ function newGame() {
     var spellAura = 0;
     var spellOrNot = 0;
     var stepsWithNoSpell = 0;
+    var hasProtect = false;
+
     for (var i = 0; i < bonesOnScreen.length;) {
         var index = Math.floor(Math.random() * bonesOnScreen.length);
         var bone = bonesOnScreen[index];
@@ -160,7 +162,13 @@ function newGame() {
         spellAura += parseInt(bone.attr('aura'));
         spellOrNot += Math.floor(Math.random() * 5) + stepsWithNoSpell;
         if (spellOrNot > 5 || bonesOnScreen.length === 0) {
-            var spellType = Math.floor(Math.random() * 2);
+            var spellType;
+            if(!hasProtect && roundCount>5 && bonesOnScreen.length > 0){
+                spellType = Math.floor(Math.random() * 4);
+            }
+            else{
+                spellType = Math.floor(Math.random() * 3);
+            }
 
             //Final spell, check if there are no damage dealing spells yet
             if (bonesOnScreen.length === 0) {
@@ -185,7 +193,7 @@ function newGame() {
             spell.css('opacity', '0.5');
 
             //Damage spells
-            if (spellType === 0) {
+            if (spellType <= 1) {
                 if (spellAura < 20) {
                     spell.attr('src', 'assets/images/fireball-red-1.png');
                 }
@@ -246,7 +254,7 @@ function newGame() {
                 });
             }
             //Healing spells
-            else if (spellType === 1) {
+            else if (spellType === 2) {
                 if (spellAura < 20) {
                     spell.attr('src', 'assets/images/heal-royal-1.png');
                 }
@@ -269,6 +277,59 @@ function newGame() {
                         $('#player').attr('src', 'assets/images/wizard-heal.gif');
                         setTimeout(function () {
                             playerHP += auraToCast;
+                            $('#playerHP').text(playerHP);
+                            $('#player').attr('src', 'assets/images/wizard-idle.gif');
+                            $('#playerText').text("+" + auraToCast);
+                            $('#playerText').css('color', 'rgb(60,60,255)');
+                            $('#playerText').animate({
+                                top: -100,
+                                opacity: 0
+                            }, 800, 'linear', function () {
+                                $('#playerText').text("");
+                                $('#playerText').css('top', '0');
+                                $('#playerText').css('opacity', '100');
+                                animating = false;
+                            });
+                            if ($('#enemyHP').text() != '0') {
+                                $('#enemy').attr('src', 'assets/images/Skeleton React.gif');
+                                setTimeout(function () {
+                                    $('#enemy').attr('src', 'assets/images/Skeleton Idle.gif');
+                                }, 300);
+                            }
+                        }, 2000);
+                    }
+                    setTimeout(noMoreMoves(), 800);
+                    if ($('#enemyHP').text() === '0') {
+                        return;
+                    }
+
+                });
+            }
+            // Protect spells
+            else if(spellType===3){
+                if (spellAura < 20) {
+                    spell.attr('src', 'assets/images/protect-jade-1.png');
+                }
+                else if (spellAura > 50) {
+                    spell.attr('src', 'assets/images/protect-jade-3.png');
+                }
+                else {
+                    spell.attr('src', 'assets/images/protect-jade-2.png');
+                }
+                // Create the spell
+                spell.on('click', function () {
+                    if (animating) {
+                        return;
+                    }
+                    var auraToCast = parseInt($(this).attr('aura'));
+                    if (auraToCast === aura) {
+                        hasProtect = true;
+                        animating = true;
+                        $(this).fadeOut();
+                        $('#spell-' + auraToCast).fadeOut();
+                        $('#player').attr('src', 'assets/images/wizard-heal.gif');
+                        setTimeout(function () {
+                            game.enemy.power = Math.floor(game.enemy.power * 2 / 3);
                             $('#playerHP').text(playerHP);
                             $('#player').attr('src', 'assets/images/wizard-idle.gif');
                             $('#playerText').text("+" + auraToCast);
@@ -368,6 +429,7 @@ function newGame() {
     return { bonesInRound, spells, enemy };
 }
 
+// Check if an image container is empty of fully opaque items.
 function isEmpty(imgContainer) {
     for (var i = 0; i < imgContainer.length; i++) {
         var thisImg = $(imgContainer[i]);
@@ -378,6 +440,7 @@ function isEmpty(imgContainer) {
     return true;
 }
 
+// Check whether there are any more available moves.
 function noMoreMoves() {
     if (isEmpty($('#boneyard img'))) {
         if (game.enemy.enemyHP <= 0) {
@@ -408,6 +471,7 @@ function noMoreMoves() {
     }
 }
 
+// Display a floating message to the center of the screen.
 function message(messageText) {
     $('#message').text(messageText);
     setTimeout(function () {
@@ -422,6 +486,7 @@ function message(messageText) {
     }, 800);
 }
 
+// Set up a new game to be started upon clicking the clickMe bone.
 function setNewGame(){
     aura = 0;
     $('#playerAura').text(' ');
