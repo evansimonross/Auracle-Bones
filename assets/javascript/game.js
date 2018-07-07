@@ -1,9 +1,9 @@
-var aura = 0;
-var playerHP = 100;
-var roundCount = 1;
-var game = {};
-var animating = false;
-var changingLevels = false;
+var aura;
+var playerHP;
+var roundCount;
+var game;
+var animating;
+var changingLevels;
 
 function newGame() {
     var bonesInRound = [];
@@ -12,48 +12,10 @@ function newGame() {
     var enemy = {};
 
     // Decide how many bones of how many types to use in this round.
-    var numberOfBoneTypes = 0;
-    var numberOfBones = 0;
-
-    switch (roundCount) {
-        case 1:
-            numberOfBoneTypes = 2;
-            numberOfBones = 9;
-            break;
-        case 2:
-            numberOfBoneTypes = 2;
-            numberOfBones = 10;
-            break;
-        case 3:
-            numberOfBoneTypes = 3;
-            numberOfBones = 10;
-            break;
-        case 4:
-            numberOfBoneTypes = 3;
-            numberOfBones = 12;
-            break;
-        case 5:
-            numberOfBoneTypes = 3;
-            numberOfBones = 15;
-            break;
-        case 6:
-            numberOfBoneTypes = 4;
-            numberOfBones = 15;
-            break;
-        case 7:
-            numberOfBoneTypes = 4;
-            numberOfBones = 18;
-            break;
-        case 8:
-            numberOfBoneTypes = 5;
-            numberOfBones = 18;
-            break;
-        case 9:
-            numberOfBoneTypes = 5;
-            numberOfBones = 25;
-        case 10:
-            numberOfBoneTypes = 6;
-            numberOfBones = 30;
+    var numberOfBoneTypes = Math.floor(roundCount/5)+2;
+    var numberOfBones = Math.floor(roundCount/2)+8;
+    if(roundCount%5===0){
+        numberOfBones+=2;
     }
 
     // Choose which bone images to use and their values.
@@ -77,7 +39,6 @@ function newGame() {
     player.attr('src', 'assets/images/wizard-idle.gif');
 
     // Choose how many of each bone to display, and displays them.
-
     $('#boneyard').empty();
     var bonesHeader = $('<h1>');
     bonesHeader.text('Bones');
@@ -94,11 +55,13 @@ function newGame() {
         bone.attr('width', '125px');
         bone.attr('aura', boneType.aura);
         bone.on('click', function () {
-            // Do not allow overlapping animations
+            // Do not allow overlapping animations. Do not allow repeat clicks.
             if (animating) {
                 return;
             }
             animating = true;
+            $(this).prop('onclick',null).off('click');
+
             // Increase aura and animate the bone's disappearance.
             aura += parseInt($(this).attr('aura'));
             $('#auraText').text("+" + $(this).attr('aura'));
@@ -111,7 +74,9 @@ function newGame() {
                 $('#auraText').css('opacity', '100');
             });
             $('#playerAura').text(aura);
-            $(this).fadeOut("slow");
+            $(this).animate({
+                opacity: 0.1
+            },800,'linear');
 
             // Highlights a spell if the player's aura matches the spell's aura.
             for (var i = 0; i < spells.length; i++) {
@@ -175,14 +140,6 @@ function newGame() {
         $('#boneyard').append(bone);
         bonesOnScreen.push(bone);
     }
-
-    var emptyBone = $('<img>');
-    emptyBone.attr('src', 'assets/images/empty.png');
-    emptyBone.css('float,left');
-    emptyBone.css('margin', '20px');
-    emptyBone.attr('width', '125px');
-    emptyBone.attr('height', '125px');
-    $('#boneyard').append(emptyBone);
 
     // Create the spells available in this round.
 
@@ -318,7 +275,7 @@ function newGame() {
                                 $('#playerText').css('opacity', '100');
                                 animating = false;
                             });
-                            if (('#enemyHP').text() != '0') {
+                            if ($('#enemyHP').text() != '0') {
                                 $('#enemy').attr('src', 'assets/images/Skeleton React.gif');
                                 setTimeout(function () {
                                     $('#enemy').attr('src', 'assets/images/Skeleton Idle.gif');
@@ -414,14 +371,12 @@ function newGame() {
 
 function isEmpty(imgContainer) {
     for (var i = 0; i < imgContainer.length; i++) {
-        var thisImg = imgContainer[i];
-        if (thisImg.getAttribute('src').indexOf('empty') >= 0) {
-            return true;
-        }
-        else if (thisImg.getAttribute('style').indexOf('none') === -1) {
+        var thisImg = $(imgContainer[i]);
+        if (thisImg.css('opacity')==='1') {
             return false;
         }
     }
+    return true;
 }
 
 function noMoreMoves() {
@@ -469,6 +424,12 @@ function message(messageText) {
 }
 
 function setNewGame(){
+    aura = 0;
+    playerHP = 100; 
+    roundCount = 1;
+    animating = false;
+    changingLevels = false;
+
     $('#boneyard').empty();
     var bonesHeader = $('<h1>');
     bonesHeader.text('Bones');
@@ -487,6 +448,4 @@ function setNewGame(){
     });
 }
 
-setNewGame();
-
-//$(document).ready( setNewGame() );
+$(document).ready( setNewGame() );
