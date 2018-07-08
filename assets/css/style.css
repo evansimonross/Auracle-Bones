@@ -28,6 +28,16 @@ p{
     font-size: 1.5em;
 }
 
+.sightAura{
+    color: black;
+    font-weight: 700;
+    display: inline;
+    position: relative;
+    right: 80px;
+    bottom: 10px;
+    -webkit-text-stroke: 0.5px #e1e2b6;
+}
+
 .header-img{
     width:100%;
     display:block;

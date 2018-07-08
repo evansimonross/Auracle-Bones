@@ -181,7 +181,7 @@ function newGame() {
         bonesOnScreen.splice(index, 1);
         spellAura += parseInt(bone.attr('aura'));
         spellOrNot += Math.floor(Math.random() * 4) + stepsWithNoSpell;
-        stepsWithNoSpell+=1;
+        stepsWithNoSpell += 1;
         if (spellOrNot > 5 || bonesOnScreen.length === 0 || firstBone) {
             var spellType;
             if (firstBone) {
@@ -334,12 +334,9 @@ function newGame() {
                         }, 2000);
                     }
                     setTimeout(noMoreMoves, 800);
-                    // if ($('#enemyHP').text() === '0') {
-                    //     return;
-                    // }
-
                 });
             }
+
             // Protect spells
             else if (spellType === 3) {
                 hasProtect = true;
@@ -373,7 +370,6 @@ function newGame() {
                             else {
                                 game.enemy.power = Math.floor(game.enemy.power / 2);
                             }
-                            $('#playerHP').text(playerHP);
                             $('#player').attr('src', 'assets/images/wizard-idle.gif');
                             $('#playerText').text("+Shield");
                             $('#playerText').css('color', 'rgb(60,60,255)');
@@ -395,10 +391,6 @@ function newGame() {
                         }, 2000);
                     }
                     setTimeout(noMoreMoves, 800);
-                    // if ($('#enemyHP').text() === '0') {
-                    //     return;
-                    // }
-
                 });
             }
 
@@ -453,10 +445,56 @@ function newGame() {
                     }
                     // Check if there any any moves remaining.
                     setTimeout(noMoreMoves, 800);
-                    if ($('#enemyHP').text() === '0') {
+                });
+            }
+
+            // Sight spell
+            else if (spellType === 5) {
+                spell.attr('src', 'assets/images/evil-eye-eerie-2.png');
+                
+                // Create the spell
+                spell.on('click', function () {
+                    if (animating) {
                         return;
                     }
+                    var auraToCast = parseInt($(this).attr('aura'));
+                    if (auraToCast === aura) {
+                        animating = true;
+                        $(this).fadeOut();
+                        $('#spell-' + auraToCast).fadeOut();
+                        $('#player').attr('src', 'assets/images/wizard-heal.gif');
+                        setTimeout(function () {
 
+                            var bonesInBoneyard = $('#boneyard img');
+                            for(var i=0;i<bonesInBoneyard.length;i++){
+                                var boneToSee = $(bonesInBoneyard[i]);
+                                var auraToSee = $('<p>');
+                                auraToSee.text(boneToSee.attr('aura'));
+                                auraToSee.attr('class','sightAura');
+                                boneToSee.after(auraToSee);
+                            }
+
+                            $('#player').attr('src', 'assets/images/wizard-idle.gif');
+                            $('#playerText').text("+Sight");
+                            $('#playerText').css('color', 'rgb(60,60,255)');
+                            $('#playerText').animate({
+                                top: -100,
+                                opacity: 0
+                            }, 800, 'linear', function () {
+                                $('#playerText').text("");
+                                $('#playerText').css('top', '0');
+                                $('#playerText').css('opacity', '100');
+                                animating = false;
+                            });
+                            if ($('#enemyHP').text() != '0') {
+                                $('#enemy').attr('src', 'assets/images/Skeleton React.gif');
+                                setTimeout(function () {
+                                    $('#enemy').attr('src', 'assets/images/Skeleton Idle.gif');
+                                }, 300);
+                            }
+                        }, 2000);
+                    }
+                    setTimeout(noMoreMoves, 800);
                 });
             }
 
