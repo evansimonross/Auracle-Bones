@@ -621,8 +621,13 @@ function noMoreMoves() {
                 waitTime = 3000;
             }
             setTimeout(function () {
-                message("ROUND " + (roundCount + 1));
+                if(roundCount===20){
+                    message("YOU WIN");
+                    setNewGame();
+                    return;
+                }
                 roundCount++;
+                message("ROUND " + (roundCount));
                 setTimeout(function () {
                     game = newGame();
                 }, 2000);
@@ -658,9 +663,15 @@ function message(messageText) {
 function setNewGame() {
     aura = 0;
     playerHP = 100;
-    roundCount = 20;
+    roundCount = 1;
     animating = false;
     changingLevels = false;
+
+    // If previous game reached level 20, the enemy sprite attributes must be reset.
+    $('#enemy').css('position', 'static');
+    $('#enemy').css('height', '100px');
+    $('#enemy').css('transform', 'scaleX(-1)');
+    $('#enemy').css('filter', 'FlipH');
 
     $('#boneyard').empty();
     var bonesHeader = $('<h1>');
