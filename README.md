@@ -1,6 +1,9 @@
 # Auracle-Bones
 A simple puzzle RPG game.
 
+## How to Play
+
+
 ## Project History
 This project was a homework assignment for the Columbia Full Stack Web Development Coding Bootcamp, testing our preliminary ability to use JQuery. The project had two possible prompts we could choose from. One was a number guessing game in which the player had to figure out the values associated with images on a screen and add them up to an arbitrary goal. The other was a simple turn-based RPG game with hit-points and character images. After a conversation with a classmate on the subway home, I realized I wanted to somehow combine both prompts. Much brainstorming later, and I came up with the concept for Auracle Bones.
 
@@ -16,4 +19,4 @@ This project would not have been possible if not for the myriad free-to-use artw
 * Skeleton sprite by [Jesse M.](https://twitter.com/Jsf23Art) Found on [itch.io](https://jesse-m.itch.io/skeleton-pack).
 * Demon sprite by Luis Zuno aka [Ansimuz](https://www.patreon.com/ansimuz/memberships). Found on [itch.io](https://ansimuz.itch.io/gothicvania-patreon-collection).
 * Background pattern from [Toptal Subtle Patterns](https://www.toptal.com/designers/subtlepatterns/tweed/).
-* Sprite editing via <https://easygif.com>.
+* Sprite editing via <https://easygif.com> and <https://piskelapp.com>.

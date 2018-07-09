@@ -94,15 +94,27 @@ function newGame() {
 
             // Enemy attacks
             if (game.enemy.enemyHP > 0) {
-                $('#enemy').attr('src', 'assets/images/Skeleton Attack.gif');
-                $('#enemy').css('height', '120px');
-                $('#enemy').css('margin-top', '0px');
-                $('#enemy').css('transform', 'scaleX(-1) translateX(22px)');
+                $('#enemy').attr('src', 'assets/images/' + game.enemy.enemyName + '-attack.gif');
+                if (roundCount === 20) {
+                    $('#enemy').css('height','500px');
+                    $('#enemy').css('transform', 'translate(-200px,-250px)');
+                }
+                else {
+                    $('#enemy').css('height', '120px');
+                    $('#enemy').css('margin-top', '0px');
+                    $('#enemy').css('transform', 'scaleX(-1) translateX(22px)');
+                }
                 setTimeout(function () {
-                    $('#enemy').attr('src', 'assets/images/Skeleton Idle.gif');
-                    $('#enemy').css('height', '100px');
-                    $('#enemy').css('margin-top', '36px');
-                    $('#enemy').css('transform', 'scaleX(-1) translateX(0px)');
+                    $('#enemy').attr('src', 'assets/images/' + game.enemy.enemyName + '-idle.gif');
+                    if (roundCount === 20) {
+                        $('#enemy').css('height', '400px');
+                        $('#enemy').css('transform', 'translate(-95px,-150px)');
+                    }
+                    else {
+                        $('#enemy').css('height', '100px');
+                        $('#enemy').css('margin-top', '36px');
+                        $('#enemy').css('transform', 'scaleX(-1) translateX(0px)');
+                    }
 
                     //Enemy takes DOT damage after attacking
                     if (game.enemy.dotDamage > 0) {
@@ -117,11 +129,26 @@ function newGame() {
                             $('#enemyText').css('opacity', '100');
                             animating = false;
                         });
-                        $('#enemyHP').text(game.enemy.enemyHP);
-                        $('#enemy').attr('src', 'assets/images/Skeleton Hit.gif');
-                        setTimeout(function () {
-                            $('#enemy').attr('src', 'assets/images/Skeleton Idle.gif');
-                        }, 800);
+                        if (game.enemy.enemyHP <= 0) {
+                            $('#enemyHP').text('0');
+                            $('#enemy').attr('src', 'assets/images/' + game.enemy.enemyName + '-dead.gif');
+                            if(roundCount===20){
+                                $('#enemy').css('transform', 'translate(-50px,-225px)');
+                            }
+                        }
+                        else {
+                            $('#enemyHP').text(game.enemy.enemyHP);
+                            $('#enemy').attr('src', 'assets/images/' + game.enemy.enemyName + '-hit.gif');
+                            if(roundCount===20){
+                                $('#enemy').css('transform', 'translate(-50px,-225px)');
+                            }
+                            setTimeout(function () {
+                                $('#enemy').attr('src', 'assets/images/' + game.enemy.enemyName + '-idle.gif');
+                                if(roundCount===20){
+                                    $('#enemy').css('transform', 'translate(-95px,-150px)');
+                                }
+                            }, 800);
+                        }
                     }
                     else {
                         animating = false;
@@ -263,13 +290,22 @@ function newGame() {
                         setTimeout(function () {
                             if (game.enemy.enemyHP <= 0) {
                                 $('#enemyHP').text('0');
-                                $('#enemy').attr('src', 'assets/images/Skeleton Dead.gif');
+                                $('#enemy').attr('src', 'assets/images/' + game.enemy.enemyName + '-dead.gif');
+                                if(roundCount===20){
+                                    $('#enemy').css('transform', 'translate(-50px,-225px)');
+                                }
                             }
                             else {
                                 $('#enemyHP').text(game.enemy.enemyHP);
-                                $('#enemy').attr('src', 'assets/images/Skeleton Hit.gif');
+                                $('#enemy').attr('src', 'assets/images/' + game.enemy.enemyName + '-hit.gif');
+                                if(roundCount===20){
+                                    $('#enemy').css('transform', 'translate(-50px,-225px)');
+                                }
                                 setTimeout(function () {
-                                    $('#enemy').attr('src', 'assets/images/Skeleton Idle.gif');
+                                    $('#enemy').attr('src', 'assets/images/' + game.enemy.enemyName + '-idle.gif');
+                                    if(roundCount===20){
+                                        $('#enemy').css('transform', 'translate(-95px,-150px)');
+                                    }
                                 }, 800);
                             }
                             $('#enemyText').text("-" + auraToCast);
@@ -325,12 +361,6 @@ function newGame() {
                                 $('#playerText').css('opacity', '100');
                                 animating = false;
                             });
-                            if ($('#enemyHP').text() != '0') {
-                                $('#enemy').attr('src', 'assets/images/Skeleton React.gif');
-                                setTimeout(function () {
-                                    $('#enemy').attr('src', 'assets/images/Skeleton Idle.gif');
-                                }, 300);
-                            }
                         }, 2000);
                     }
                     setTimeout(noMoreMoves, 800);
@@ -382,12 +412,6 @@ function newGame() {
                                 $('#playerText').css('opacity', '100');
                                 animating = false;
                             });
-                            if ($('#enemyHP').text() != '0') {
-                                $('#enemy').attr('src', 'assets/images/Skeleton React.gif');
-                                setTimeout(function () {
-                                    $('#enemy').attr('src', 'assets/images/Skeleton Idle.gif');
-                                }, 300);
-                            }
                         }, 2000);
                     }
                     setTimeout(noMoreMoves, 800);
@@ -421,14 +445,14 @@ function newGame() {
                         }, 2000);
                         setTimeout(function () {
                             if (game.enemy.enemyHP <= 0) {
-                                $('#enemyHP').text('0');
-                                $('#enemy').attr('src', 'assets/images/Skeleton Dead.gif');
+                                // $('#enemyHP').text('0');
+                                // $('#enemy').attr('src', 'assets/images/' + game.enemy.enemyName + '-dead.gif');
                             }
                             else {
                                 $('#enemyHP').text(game.enemy.enemyHP);
-                                $('#enemy').attr('src', 'assets/images/Skeleton Hit.gif');
+                                $('#enemy').attr('src', 'assets/images/' + game.enemy.enemyName + '-hit.gif');
                                 setTimeout(function () {
-                                    $('#enemy').attr('src', 'assets/images/Skeleton Idle.gif');
+                                    $('#enemy').attr('src', 'assets/images/' + game.enemy.enemyName + '-idle.gif');
                                 }, 800);
                             }
                             $('#enemyText').text("+Frostbite");
@@ -451,7 +475,7 @@ function newGame() {
             // Sight spell
             else if (spellType === 5) {
                 spell.attr('src', 'assets/images/evil-eye-eerie-2.png');
-                
+
                 // Create the spell
                 spell.on('click', function () {
                     if (animating) {
@@ -466,11 +490,11 @@ function newGame() {
                         setTimeout(function () {
 
                             var bonesInBoneyard = $('#boneyard img');
-                            for(var i=0;i<bonesInBoneyard.length;i++){
+                            for (var i = 0; i < bonesInBoneyard.length; i++) {
                                 var boneToSee = $(bonesInBoneyard[i]);
                                 var auraToSee = $('<p>');
                                 auraToSee.text(boneToSee.attr('aura'));
-                                auraToSee.attr('class','sightAura');
+                                auraToSee.attr('class', 'sightAura');
                                 boneToSee.after(auraToSee);
                             }
 
@@ -486,12 +510,6 @@ function newGame() {
                                 $('#playerText').css('opacity', '100');
                                 animating = false;
                             });
-                            if ($('#enemyHP').text() != '0') {
-                                $('#enemy').attr('src', 'assets/images/Skeleton React.gif');
-                                setTimeout(function () {
-                                    $('#enemy').attr('src', 'assets/images/Skeleton Idle.gif');
-                                }, 300);
-                            }
                         }, 2000);
                     }
                     setTimeout(noMoreMoves, 800);
@@ -531,26 +549,35 @@ function newGame() {
     var enemyHP = Math.floor(Math.random() * maxDmgDealt) + 1;
     $('#enemyHP').text(enemyHP);
     var power = Math.floor(Math.random() * ((playerHP / 2) + maxHpHealed) / numberOfBones) + 1;
-    var enemyName = 'Skeleton';
-    var sprite = 'assets/images/Skeleton Idle.gif'
-
-    //Make skeleton's color match bones
+    var enemyName = 'skeleton';
     var enemyColor = 0;
-    switch (boneSet) {
-        case 1:
-            enemyColor = 200;
-            break;
-        case 2:
-            break;
-        case 3:
-            enemyColor = 50;
-            break;
-        case 4:
-            enemyColor = 100;
-            break;
-        default:
-            console.log("Bone set is not recognized.")
+    if (roundCount === 20) {
+        enemyName = 'demon';
+        $('#enemy').css('position', 'absolute');
+        $('#enemy').css('height', '400px');
+        $('#enemy').css('transform', 'translate(-95px,-150px)');
+        $('#enemy').css('z-index', '1');
     }
+    else {
+        //Make skeleton's color match bones
+        switch (boneSet) {
+            case 1:
+                enemyColor = 200;
+                break;
+            case 2:
+                break;
+            case 3:
+                enemyColor = 50;
+                break;
+            case 4:
+                enemyColor = 100;
+                break;
+            default:
+                console.log("Bone set is not recognized.")
+        }
+    }
+
+    var sprite = 'assets/images/' + enemyName + '-idle.gif';
 
     var dotDamage = 0;
 
@@ -631,7 +658,7 @@ function message(messageText) {
 function setNewGame() {
     aura = 0;
     playerHP = 100;
-    roundCount = 1;
+    roundCount = 20;
     animating = false;
     changingLevels = false;
 
