@@ -38,6 +38,13 @@ p{
     -webkit-text-stroke: 0.5px #e1e2b6;
 }
 
+/* img:hover{
+    -webkit-filter: drop-shadow(2px 2px 0 #0009)
+                  drop-shadow(-2px -2px 0 #0009);
+  filter: drop-shadow(2px 2px 0 #0009) 
+          drop-shadow(-2px -2px 0 #0009);
+} */
+
 .header-img{
     width:100%;
     display:block;

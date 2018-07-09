@@ -2,7 +2,18 @@
 A simple puzzle RPG game.
 
 ## How to Play
+Each round, a set of bones will appear under the "Bones" header. They will come in 2-6 randomized shapes. Each unique shape has as associated "aura" value. When you click a bone, its aura is depleted and added to your aura meter at the top left of your screen. Every time you harvest a bone, the enemy attacks as well. 
 
+Under the "Spells" header is a list of spells available in that round. Spells may only be cast when your aura meter is precisely at the value listed under the spell. The spell will be highlighted in yellow if it is available. Click it to cast.
+
+Spells come in five varieties as of the current version:
+* Damage: deals damage to the enemy equal to aura required to cast it. The icon is an orange fireball.
+* Heal: heals the player equal to the aura required to cast it. The icon is a heart with a cross. 
+* Shield: protects the player such that subsequent enemy attacks deal less damage. The icon is a green shield. Available from level 6 onward. 
+* Frostbite: causes damage over time on the enemy, taken after each time the enemy attacks euqal to the aura required to cast it. The icon is blue ice shards. Available from level 11 onward. 
+* Sight: reveals the aura values for all bones on the field. The icon is a green eye. Available from level 16 onward.
+
+The game is over if the player dies or runs out of useable spells without killing the enemy. You win if you beat the final boss at level 20.
 
 ## Project History
 This project was a homework assignment for the Columbia Full Stack Web Development Coding Bootcamp, testing our preliminary ability to use JQuery. The project had two possible prompts we could choose from. One was a number guessing game in which the player had to figure out the values associated with images on a screen and add them up to an arbitrary goal. The other was a simple turn-based RPG game with hit-points and character images. After a conversation with a classmate on the subway home, I realized I wanted to somehow combine both prompts. Much brainstorming later, and I came up with the concept for Auracle Bones.
