@@ -373,6 +373,10 @@ function newGame() {
                                 $('#playerText').css('opacity', '100');
                                 animating = false;
                             });
+                            var healedPercent = 100*(playerHP/playerHPAtStart);
+                            $('#playerHPLevel').animate({
+                                width: healedPercent + '%'
+                            }, 800, 'linear');
                         }, 2000);
                     }
                     setTimeout(noMoreMoves, 800);
@@ -607,7 +611,11 @@ function newGame() {
     $('#round').text(roundCount);
 
     $('#auraLevel').animate({
-        width: '1%'
+        width: '0%'
+    }, 800, 'linear');
+
+    $('#playerHPLevel').animate({
+        width: '100%'
     }, 800, 'linear');
 
     return { bonesInRound, spells, enemy };

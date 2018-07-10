@@ -141,17 +141,17 @@ hr{
 
 .meter{
     position: absolute;
-    height: 40px;
+    height: 35px;
     width: 75%;
     left: 12.5%;
-    top: 80px;
+    top: 85px;
     background-color: #0006;
     border: solid 2px #0009;
 }
 
 #auraLevel{
     background-color: rgb(60, 60, 255);
-    width: 1%;
+    width: 0%;
     height: 100%;
 }
 
