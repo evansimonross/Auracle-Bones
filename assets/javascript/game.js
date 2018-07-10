@@ -10,6 +10,7 @@ function newGame() {
     var bonesOnScreen = [];
     var spells = [];
     var enemy = {};
+    var playerHPAtStart = playerHP;
 
     // Decide how many bones of how many types to use in this round.
     var numberOfBoneTypes = Math.floor(roundCount / 5) + 2;
@@ -159,6 +160,7 @@ function newGame() {
                     }
                 }, 1800);
                 setTimeout(function () {
+                    var oldPercent = 100*(playerHP/playerHPAtStart);
                     playerHP -= game.enemy.power;
                     if (playerHP < 0) {
                         playerHP = 0;
@@ -180,6 +182,12 @@ function newGame() {
                         $('#playerText').css('top', '0');
                         $('#playerText').css('opacity', '100');
                     });
+                    var newPercent = 100*(playerHP/playerHPAtStart);
+                    $('#playerHPLevel').css('width',newPercent+'%');
+                    $('#playerHPLostLevel').css('width',(oldPercent-newPercent)+'%');
+                    $('#playerHPLostLevel').animate({
+                        width: 0
+                    }, 800, 'linear');
                 }, 800);
             }
             else {
