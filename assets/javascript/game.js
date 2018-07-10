@@ -74,6 +74,10 @@ function newGame() {
                 $('#auraText').css('opacity', '100');
             });
             $('#playerAura').text(aura);
+            var maxAura = spells[spells.length-1].attr('aura');
+            $('#auraLevel').animate({
+                width: (aura/maxAura)*100 + '%'
+            }, 800, 'linear');
             $(this).animate({
                 opacity: 0.1
             }, 800, 'linear');
@@ -593,6 +597,10 @@ function newGame() {
     $('#playerAura').text(aura);
     $('#playerHP').text(playerHP);
     $('#round').text(roundCount);
+
+    $('#auraLevel').animate({
+        width: '1%'
+    }, 800, 'linear');
 
     return { bonesInRound, spells, enemy };
 }

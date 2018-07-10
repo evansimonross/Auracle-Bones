@@ -2,7 +2,7 @@
 A simple puzzle RPG game.
 
 ## How to Play
-Each round, a set of bones will appear under the "Bones" header. They will come in 2-6 randomized shapes. Each unique shape has as associated "aura" value. When you click a bone, its aura is depleted and added to your aura meter at the top left of your screen. Every time you harvest a bone, the enemy attacks as well. 
+Each round, a set of bones will appear under the "Bones" header. They will come in 2-6 randomized shapes. Each unique shape has an associated "aura" value. When you click a bone, its aura is depleted and added to your aura meter at the top left of your screen. Every time you harvest a bone, the enemy attacks as well. 
 
 Under the "Spells" header is a list of spells available in that round. Spells may only be cast when your aura meter is precisely at the value listed under the spell. The spell will be highlighted in yellow if it is available. Click it to cast.
 
