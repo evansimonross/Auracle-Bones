@@ -67,6 +67,16 @@ hr{
     padding: 0;
 }
 
+#auraCrystal{
+    height: 76px;
+    image-rendering: pixelated;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 60px;
+    filter: hue-rotate(240deg);
+}
+
 #player{
     height: 76px;
     image-rendering: pixelated;
@@ -89,32 +99,32 @@ hr{
 }
 
 #auraText{
-    position:relative;
-    margin-top:30px;
+    position:absolute;
     display:block;
+    left: 10%;
+    top: 20%;
     color: rgb(60, 60, 255);
-    right: 50px;
     -webkit-text-stroke-width: 1px;
     -webkit-text-stroke-color: #e1e2b6;
     font-weight: 700;
 }
 
 #playerText{
-    position:relative;
-    margin-top:30px;
+    position:absolute;
     display:block;
-    left: 175px;
+    left: 10%;
+    top: 20%;
     -webkit-text-stroke-width: 1px;
     -webkit-text-stroke-color: #e1e2b6;
     font-weight: 700;
 }
 
 #enemyText{
-    position:relative;
-    margin-top:60px;
+    position:absolute;
     display:block;
     color: rgb(255, 60, 60);
-    right: 175px;
+    left: 10%;
+    top: 20%;
     -webkit-text-stroke-width: 1px;
     -webkit-text-stroke-color: #e1e2b6;
     font-weight: 700;
@@ -155,7 +165,7 @@ hr{
     height: 100%;
 }
 
-#playerHPLevel{
+.HPLevel{
     display:block;
     float: left;
     background-color: rgb(60, 255, 20);
@@ -163,7 +173,7 @@ hr{
     height: 100%;
 }
 
-#playerHPLostLevel{
+.HPLostLevel{
     display:block;
     float: left;
     background-color: rgb(255, 60, 20);

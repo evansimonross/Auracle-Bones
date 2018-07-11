@@ -67,17 +67,17 @@ function newGame() {
             aura += parseInt($(this).attr('aura'));
             $('#auraText').text("+" + $(this).attr('aura'));
             $('#auraText').animate({
-                top: -100,
+                top: '-5%',
                 opacity: 0
             }, 800, 'linear', function () {
                 $('#auraText').text("");
-                $('#auraText').css('top', '0');
+                $('#auraText').css('top', '20%');
                 $('#auraText').css('opacity', '100');
             });
             $('#playerAura').text(aura);
-            var maxAura = spells[spells.length-1].attr('aura');
+            var maxAura = spells[spells.length - 1].attr('aura');
             $('#auraLevel').animate({
-                width: (aura/maxAura)*100 + '%'
+                width: (aura / maxAura) * 100 + '%'
             }, 800, 'linear');
             $(this).animate({
                 opacity: 0.1
@@ -101,7 +101,7 @@ function newGame() {
             if (game.enemy.enemyHP > 0) {
                 $('#enemy').attr('src', 'assets/images/' + game.enemy.enemyName + '-attack.gif');
                 if (roundCount === 20) {
-                    $('#enemy').css('height','500px');
+                    $('#enemy').css('height', '500px');
                     $('#enemy').css('transform', 'translate(-200px,-250px)');
                 }
                 else {
@@ -123,33 +123,43 @@ function newGame() {
 
                     //Enemy takes DOT damage after attacking
                     if (game.enemy.dotDamage > 0) {
+                        var oldEnemyPercent = 100 * (game.enemy.enemyHP / game.enemy.HPAtStart);
                         game.enemy.enemyHP -= game.enemy.dotDamage;
                         $('#enemyText').text("-" + game.enemy.dotDamage);
                         $('#enemyText').animate({
-                            top: -100,
+                            top: '-5%',
                             opacity: 0
                         }, 800, 'linear', function () {
                             $('#enemyText').text("");
-                            $('#enemyText').css('top', '0');
+                            $('#enemyText').css('top', '20%');
                             $('#enemyText').css('opacity', '100');
                             animating = false;
                         });
+                        var newEnemyPercent = 100 * (game.enemy.enemyHP / game.enemy.HPAtStart);
+                        if (newEnemyPercent < 0) {
+                            newEnemyPercent = 0;
+                        }
+                        $('#enemyHPLevel').css('width', newEnemyPercent + '%');
+                        $('#enemyHPLostLevel').css('width', (oldEnemyPercent - newEnemyPercent) + '%');
+                        $('#enemyHPLostLevel').animate({
+                            width: 0
+                        }, 800, 'linear');
                         if (game.enemy.enemyHP <= 0) {
                             $('#enemyHP').text('0');
                             $('#enemy').attr('src', 'assets/images/' + game.enemy.enemyName + '-dead.gif');
-                            if(roundCount===20){
+                            if (roundCount === 20) {
                                 $('#enemy').css('transform', 'translate(-50px,-225px)');
                             }
                         }
                         else {
                             $('#enemyHP').text(game.enemy.enemyHP);
                             $('#enemy').attr('src', 'assets/images/' + game.enemy.enemyName + '-hit.gif');
-                            if(roundCount===20){
+                            if (roundCount === 20) {
                                 $('#enemy').css('transform', 'translate(-50px,-225px)');
                             }
                             setTimeout(function () {
                                 $('#enemy').attr('src', 'assets/images/' + game.enemy.enemyName + '-idle.gif');
-                                if(roundCount===20){
+                                if (roundCount === 20) {
                                     $('#enemy').css('transform', 'translate(-95px,-150px)');
                                 }
                             }, 800);
@@ -160,7 +170,7 @@ function newGame() {
                     }
                 }, 1800);
                 setTimeout(function () {
-                    var oldPercent = 100*(playerHP/playerHPAtStart);
+                    var oldPercent = 100 * (playerHP / playerHPAtStart);
                     playerHP -= game.enemy.power;
                     if (playerHP < 0) {
                         playerHP = 0;
@@ -175,16 +185,16 @@ function newGame() {
                     $('#playerText').text("-" + game.enemy.power);
                     $('#playerText').css('color', 'rgb(255,60,60)');
                     $('#playerText').animate({
-                        top: -100,
+                        top: '-5%',
                         opacity: 0
                     }, 800, 'linear', function () {
-                        $('#playerText').text("");
-                        $('#playerText').css('top', '0');
+                        $('#playerText').text('');
+                        $('#playerText').css('top', '20%');
                         $('#playerText').css('opacity', '100');
                     });
-                    var newPercent = 100*(playerHP/playerHPAtStart);
-                    $('#playerHPLevel').css('width',newPercent+'%');
-                    $('#playerHPLostLevel').css('width',(oldPercent-newPercent)+'%');
+                    var newPercent = 100 * (playerHP / playerHPAtStart);
+                    $('#playerHPLevel').css('width', newPercent + '%');
+                    $('#playerHPLostLevel').css('width', (oldPercent - newPercent) + '%');
                     $('#playerHPLostLevel').animate({
                         width: 0
                     }, 800, 'linear');
@@ -292,6 +302,7 @@ function newGame() {
                             }, 800);
                             return;
                         }
+                        var oldEnemyPercent = 100 * (game.enemy.enemyHP / game.enemy.HPAtStart);
                         game.enemy.enemyHP -= auraToCast;
                         $(this).fadeOut();
                         $('#spell-' + auraToCast).fadeOut();
@@ -303,33 +314,42 @@ function newGame() {
                             if (game.enemy.enemyHP <= 0) {
                                 $('#enemyHP').text('0');
                                 $('#enemy').attr('src', 'assets/images/' + game.enemy.enemyName + '-dead.gif');
-                                if(roundCount===20){
+                                if (roundCount === 20) {
                                     $('#enemy').css('transform', 'translate(-50px,-225px)');
                                 }
                             }
                             else {
                                 $('#enemyHP').text(game.enemy.enemyHP);
                                 $('#enemy').attr('src', 'assets/images/' + game.enemy.enemyName + '-hit.gif');
-                                if(roundCount===20){
+                                if (roundCount === 20) {
                                     $('#enemy').css('transform', 'translate(-50px,-225px)');
                                 }
                                 setTimeout(function () {
                                     $('#enemy').attr('src', 'assets/images/' + game.enemy.enemyName + '-idle.gif');
-                                    if(roundCount===20){
+                                    if (roundCount === 20) {
                                         $('#enemy').css('transform', 'translate(-95px,-150px)');
                                     }
                                 }, 800);
                             }
                             $('#enemyText').text("-" + auraToCast);
                             $('#enemyText').animate({
-                                top: -100,
+                                top: '-5%',
                                 opacity: 0
                             }, 800, 'linear', function () {
-                                $('#enemyText').text("");
-                                $('#enemyText').css('top', '0');
+                                $('#enemyText').text('');
+                                $('#enemyText').css('top', '20%');
                                 $('#enemyText').css('opacity', '100');
                                 animating = false;
                             });
+                            var newEnemyPercent = 100 * (game.enemy.enemyHP / game.enemy.HPAtStart);
+                            if (newEnemyPercent < 0) {
+                                newEnemyPercent = 0;
+                            }
+                            $('#enemyHPLevel').css('width', newEnemyPercent + '%');
+                            $('#enemyHPLostLevel').css('width', (oldEnemyPercent - newEnemyPercent) + '%');
+                            $('#enemyHPLostLevel').animate({
+                                width: 0
+                            }, 800, 'linear');
                         }, 1000);
                     }
                     // Check if there any any moves remaining.
@@ -363,17 +383,17 @@ function newGame() {
                             $('#playerHP').text(playerHP);
                             $('#player').attr('src', 'assets/images/wizard-idle.gif');
                             $('#playerText').text("+" + auraToCast);
-                            $('#playerText').css('color', 'rgb(60,60,255)');
+                            $('#playerText').css('color', 'rgb(60,255,60)');
                             $('#playerText').animate({
-                                top: -100,
+                                top: '-5%',
                                 opacity: 0
                             }, 800, 'linear', function () {
-                                $('#playerText').text("");
-                                $('#playerText').css('top', '0');
+                                $('#playerText').text('');
+                                $('#playerText').css('top', '20%');
                                 $('#playerText').css('opacity', '100');
                                 animating = false;
                             });
-                            var healedPercent = 100*(playerHP/playerHPAtStart);
+                            var healedPercent = 100 * (playerHP / playerHPAtStart);
                             $('#playerHPLevel').animate({
                                 width: healedPercent + '%'
                             }, 800, 'linear');
@@ -420,11 +440,11 @@ function newGame() {
                             $('#playerText').text("+Shield");
                             $('#playerText').css('color', 'rgb(60,60,255)');
                             $('#playerText').animate({
-                                top: -100,
+                                top: '-5%',
                                 opacity: 0
                             }, 800, 'linear', function () {
-                                $('#playerText').text("");
-                                $('#playerText').css('top', '0');
+                                $('#playerText').text('');
+                                $('#playerText').css('top', '20%');
                                 $('#playerText').css('opacity', '100');
                                 animating = false;
                             });
@@ -473,11 +493,11 @@ function newGame() {
                             }
                             $('#enemyText').text("+Frostbite");
                             $('#enemyText').animate({
-                                top: -100,
+                                top: '-5%',
                                 opacity: 0
                             }, 800, 'linear', function () {
-                                $('#enemyText').text("");
-                                $('#enemyText').css('top', '0');
+                                $('#enemyText').text('');
+                                $('#enemyText').css('top', '20%');
                                 $('#enemyText').css('opacity', '100');
                                 animating = false;
                             });
@@ -518,11 +538,11 @@ function newGame() {
                             $('#playerText').text("+Sight");
                             $('#playerText').css('color', 'rgb(60,60,255)');
                             $('#playerText').animate({
-                                top: -100,
+                                top: '-5%',
                                 opacity: 0
                             }, 800, 'linear', function () {
-                                $('#playerText').text("");
-                                $('#playerText').css('top', '0');
+                                $('#playerText').text('');
+                                $('#playerText').css('top', '20%');
                                 $('#playerText').css('opacity', '100');
                                 animating = false;
                             });
@@ -600,7 +620,7 @@ function newGame() {
     $('#enemy').attr('src', sprite);
     $('#enemy').css('filter', 'hue-rotate(' + enemyColor + 'deg)');
 
-    enemy = { enemyName, enemyHP, power, dotDamage, sprite, enemyColor };
+    enemy = { enemyName, enemyHP, HPAtStart: enemyHP, power, dotDamage, sprite, enemyColor };
 
     // Display all info
     changingLevels = false;
@@ -615,6 +635,10 @@ function newGame() {
     }, 800, 'linear');
 
     $('#playerHPLevel').animate({
+        width: '100%'
+    }, 800, 'linear');
+
+    $('#enemyHPLevel').animate({
         width: '100%'
     }, 800, 'linear');
 
@@ -645,7 +669,7 @@ function noMoreMoves() {
                 waitTime = 3000;
             }
             setTimeout(function () {
-                if(roundCount===20){
+                if (roundCount === 20) {
                     message("YOU WIN");
                     setNewGame();
                     return;

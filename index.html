@@ -25,27 +25,32 @@
                             <div class="meter">
                                 <div id="auraLevel"></div>
                             </div>
+                            <img id="auraCrystal" src="assets/images/ruby2_anime.gif">
                             <p id="auraText"></p>
-                            <p id="playerText"></p>
                         </div>
                         <div class="col-3">
                             <h1>Player</h1>
                             <p id="playerHP">&nbsp;</p>
                             <div class="meter">
-                                <div id="playerHPLevel"></div>
-                                <div id="playerHPLostLevel"></div>
+                                <div id="playerHPLevel" class="HPLevel"></div>
+                                <div id="playerHPLostLevel" class="HPLostLevel"></div>
                             </div>
-                            <img id="player">
+                            <img id="player" src="assets/images/wizard-idle.gif">
+                            <p id="playerText"></p>
                         </div>
                         <div class="col-3">
                             <h1>Enemy</h1>
                             <p id="enemyHP">&nbsp;</p>
-                            <img id="enemy">
+                            <div class="meter">
+                                <div id="enemyHPLevel" class="HPLevel"></div>
+                                <div id="enemyHPLostLevel" class="HPLostLevel"></div>
+                            </div>
+                            <img id="enemy" src="assets/images/skeleton-idle.gif">
+                            <p id="enemyText"></p>
                         </div>
                         <div class="col-3">
                             <h1>Round</h1>
                             <p id="round">&nbsp;</p>
-                            <p id="enemyText"></p>
                         </div>
                     </div>
                     <hr>
