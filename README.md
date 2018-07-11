@@ -24,7 +24,7 @@ If you found your way here, I hope you have fun playing around with this little 
 
 ## Credits
 This project would not have been possible if not for the myriad free-to-use artwork available on the web. I am no kind of visual artist, unlike the following generous creators:
-* Bone vectors found on [Vecteezy](https://www.vecteezy.com/).
+* Bone and skull vectors found on [Vecteezy](https://www.vecteezy.com/).
 * Spell art by [J. W. Bjerk (eleazzaar)](http://www.jwbjerk.com/art). Found on [Open Game Art.org](https://opengameart.org/content/painterly-spell-icons-part-1).
 * Wizard sprites by [Calciumtrice](http://calciumtrice.tumblr.com/) Found on [Open Game Art.org](https://opengameart.org/content/animated-wizard).
 * Skeleton sprite by [Jesse M.](https://twitter.com/Jsf23Art) Found on [itch.io](https://jesse-m.itch.io/skeleton-pack).

@@ -473,9 +473,23 @@ function newGame() {
 
                             //Player health bar animation
                             var healedPercent = 100 * (playerHP / playerHPAtStart);
-                            $('#playerHPLevel').animate({
-                                width: healedPercent + '%'
-                            }, 800, 'linear');
+                            if (healedPercent <= 100) {
+                                $('#playerHPLevel').animate({
+                                    width: healedPercent + '%'
+                                }, 800, 'linear');
+                            }
+
+                            //Resets the max health to current health if heals have brought the player higher than at first in the round
+                            else{
+                                playerHPAtStart = playerHP;
+                                $('#playerHPLevel').animate({
+                                    width: '115%'
+                                },400, 'linear', function(){
+                                    $('#playerHPLevel').animate({
+                                        width: '100%'
+                                    },400, 'linear');
+                                });
+                            }
                         }, 2000);
                     }
                     setTimeout(noMoreMoves, 800);
@@ -828,10 +842,10 @@ function noMoreMoves() {
 
                 //Add a crossbones to the round counter
                 $('#currentRound').before($('<img class="skullcross" src="assets/images/crossbones.png">'));
-                if(roundCount===20){
-                    $('#currentRound').attr('src','assets/images/boss-skull.png');
-                    $('#currentRound').css('width','18%');
-                    $('#currentRound').css('top','-30px');
+                if (roundCount === 20) {
+                    $('#currentRound').attr('src', 'assets/images/boss-skull.png');
+                    $('#currentRound').css('width', '18%');
+                    $('#currentRound').css('top', '-30px');
                 }
 
                 setTimeout(function () {
