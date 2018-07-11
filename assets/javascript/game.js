@@ -805,6 +805,21 @@ function newGame() {
         width: '100%'
     }, 800, 'linear');
 
+    //Add a crossbones to the round counter
+    if(roundCount===1){
+        $('.skullcross').remove();
+        $('#round').after('<img id="currentRound" class="skullcross" src="assets/images/skull.png">');
+    }
+    else{
+        $('#currentRound').before($('<img class="skullcross" src="assets/images/crossbones.png">'));
+    }
+    if (roundCount === 20) {
+        $('#currentRound').attr('src', 'assets/images/boss-skull.png');
+        $('#currentRound').css('width', '18%');
+        $('#currentRound').css('top', '-30px');
+    }
+
+
     return { bonesInRound, spells, enemy };
 }
 
@@ -839,14 +854,6 @@ function noMoreMoves() {
                 }
                 roundCount++;
                 message("ROUND " + (roundCount));
-
-                //Add a crossbones to the round counter
-                $('#currentRound').before($('<img class="skullcross" src="assets/images/crossbones.png">'));
-                if (roundCount === 20) {
-                    $('#currentRound').attr('src', 'assets/images/boss-skull.png');
-                    $('#currentRound').css('width', '18%');
-                    $('#currentRound').css('top', '-30px');
-                }
 
                 setTimeout(function () {
                     game = newGame();
@@ -904,8 +911,6 @@ function setNewGame() {
         game = newGame();
     });
 
-    $('.skullcross').remove();
-    $('#round').after('<img id="currentRound" class="skullcross" src="assets/images/skull.png">');
 }
 
 $(document).ready(setNewGame());

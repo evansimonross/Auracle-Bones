@@ -1,5 +1,5 @@
 # Auracle-Bones
-A simple puzzle RPG game.
+A simple number-puzzle turn-based RPG game. The player is an *auracle*, a practitioner of the ancient art of channeling the latent life energy in *bones* into a magical substane called *aura*. The player uses this aura to cast *spells* and to defeat enemies. 
 
 ## How to Play
 Each round, a set of bones will appear under the "Bones" header. They will come in 2-6 randomized shapes. Each unique shape has an associated "aura" value. When you click a bone, its aura is depleted and added to your aura meter at the top left of your screen. Every time you harvest a bone, the enemy attacks as well. 
@@ -27,8 +27,8 @@ This project would not have been possible if not for the myriad free-to-use artw
 * Bone and skull vectors found on [Vecteezy](https://www.vecteezy.com/).
 * Spell art by [J. W. Bjerk (eleazzaar)](http://www.jwbjerk.com/art). Found on [Open Game Art.org](https://opengameart.org/content/painterly-spell-icons-part-1).
 * Wizard sprites by [Calciumtrice](http://calciumtrice.tumblr.com/) Found on [Open Game Art.org](https://opengameart.org/content/animated-wizard).
-* Skeleton sprite by [Jesse M.](https://twitter.com/Jsf23Art) Found on [itch.io](https://jesse-m.itch.io/skeleton-pack).
-* Demon sprite by Luis Zuno aka [Ansimuz](https://www.patreon.com/ansimuz/memberships). Found on [itch.io](https://ansimuz.itch.io/gothicvania-patreon-collection).
+* Skeleton sprites by [Jesse M.](https://twitter.com/Jsf23Art) Found on [itch.io](https://jesse-m.itch.io/skeleton-pack).
+* Demon sprites by Luis Zuno aka [Ansimuz](https://www.patreon.com/ansimuz/memberships). Found on [itch.io](https://ansimuz.itch.io/gothicvania-patreon-collection).
 * Aura crystal sprite by [mieki256](http://blawat2015.no-ip.com/~mieki256/). Found on [Open Game Art.org](https://opengameart.org/users/mieki256).
 * Background pattern from [Toptal Subtle Patterns](https://www.toptal.com/designers/subtlepatterns/tweed/).
 * Sprite editing via <https://easygif.com> and <https://piskelapp.com>.
