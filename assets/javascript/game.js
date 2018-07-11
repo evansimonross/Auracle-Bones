@@ -39,7 +39,7 @@ function newGame() {
     var player = $('#player');
     player.attr('src', 'assets/images/wizard-idle.gif');
 
-    // Choose how many of each bone to display, and displays them.
+    // Choose how many of each bone to display, and display them.
     $('#boneyard').empty();
     var bonesHeader = $('<h1>');
     bonesHeader.text('Bones');
@@ -63,7 +63,7 @@ function newGame() {
             animating = true;
             $(this).prop('onclick', null).off('click');
 
-            // Increase aura and animate the bone's disappearance.
+            // Increase aura and animate the aura bar, aura floating text, and the bone's disappearance.
             aura += parseInt($(this).attr('aura'));
             $('#auraText').text("+" + $(this).attr('aura'));
             $('#auraText').animate({
@@ -83,7 +83,7 @@ function newGame() {
                 opacity: 0.1
             }, 800, 'linear');
 
-            // Highlights a spell if the player's aura matches the spell's aura.
+            // Highlight a spell if the player's aura matches the spell's aura.
             for (var i = 0; i < spells.length; i++) {
                 var spell = spells[i];
                 var spellAura = parseInt(spell.attr('aura'));
@@ -109,6 +109,8 @@ function newGame() {
                     $('#enemy').css('margin-top', '0px');
                     $('#enemy').css('transform', 'scaleX(-1) translateX(22px)');
                 }
+
+                // Enemy returns to idle animation
                 setTimeout(function () {
                     $('#enemy').attr('src', 'assets/images/' + game.enemy.enemyName + '-idle.gif');
                     if (roundCount === 20) {
@@ -123,6 +125,8 @@ function newGame() {
 
                     //Enemy takes DOT damage after attacking
                     if (game.enemy.dotDamage > 0) {
+
+                        //Animate floating text
                         var oldEnemyPercent = 100 * (game.enemy.enemyHP / game.enemy.HPAtStart);
                         game.enemy.enemyHP -= game.enemy.dotDamage;
                         $('#enemyText').text("-" + game.enemy.dotDamage);
@@ -135,6 +139,8 @@ function newGame() {
                             $('#enemyText').css('opacity', '100');
                             animating = false;
                         });
+
+                        //Animate enemy health bar
                         var newEnemyPercent = 100 * (game.enemy.enemyHP / game.enemy.HPAtStart);
                         if (newEnemyPercent < 0) {
                             newEnemyPercent = 0;
@@ -144,6 +150,8 @@ function newGame() {
                         $('#enemyHPLostLevel').animate({
                             width: 0
                         }, 800, 'linear');
+
+                        //Death animation
                         if (game.enemy.enemyHP <= 0) {
                             $('#enemyHP').text('0');
                             $('#enemy').attr('src', 'assets/images/' + game.enemy.enemyName + '-dead.gif');
@@ -151,12 +159,16 @@ function newGame() {
                                 $('#enemy').css('transform', 'translate(-50px,-225px)');
                             }
                         }
+
+                        //Hit animation
                         else {
                             $('#enemyHP').text(game.enemy.enemyHP);
                             $('#enemy').attr('src', 'assets/images/' + game.enemy.enemyName + '-hit.gif');
                             if (roundCount === 20) {
                                 $('#enemy').css('transform', 'translate(-50px,-225px)');
                             }
+
+                            //Return to idle
                             setTimeout(function () {
                                 $('#enemy').attr('src', 'assets/images/' + game.enemy.enemyName + '-idle.gif');
                                 if (roundCount === 20) {
@@ -169,9 +181,13 @@ function newGame() {
                         animating = false;
                     }
                 }, 1800);
+
+                //Player hit by attack
                 setTimeout(function () {
                     var oldPercent = 100 * (playerHP / playerHPAtStart);
                     playerHP -= game.enemy.power;
+
+                    //Player death animation
                     if (playerHP < 0) {
                         playerHP = 0;
                         $('#player').attr('src', 'assets/images/wizard-dead.gif');
@@ -181,6 +197,8 @@ function newGame() {
                             setNewGame();
                         }, 1000);
                     }
+
+                    //Animate floating text
                     $('#playerHP').text(playerHP);
                     $('#playerText').text("-" + game.enemy.power);
                     $('#playerText').css('color', 'rgb(255,60,60)');
@@ -192,6 +210,8 @@ function newGame() {
                         $('#playerText').css('top', '20%');
                         $('#playerText').css('opacity', '100');
                     });
+
+                    //Animate player health bar
                     var newPercent = 100 * (playerHP / playerHPAtStart);
                     $('#playerHPLevel').css('width', newPercent + '%');
                     $('#playerHPLostLevel').css('width', (oldPercent - newPercent) + '%');
@@ -210,7 +230,6 @@ function newGame() {
     }
 
     // Create the spells available in this round.
-
     var spellsHeader = $('<h1>');
     spellsHeader.text('Spells');
     $('#spellbook').append(spellsHeader);
@@ -221,40 +240,60 @@ function newGame() {
     var spellAura = 0;
     var spellOrNot = 0;
     var stepsWithNoSpell = 0;
-    var hasProtect = false;
+    var hasShieldSpell = false;
     var firstBone = true;
 
+    //Randomly choose a correct order for selecting bones
     for (var i = 0; i < bonesOnScreen.length;) {
         var index = Math.floor(Math.random() * bonesOnScreen.length);
         var bone = bonesOnScreen[index];
         bonesOnScreen.splice(index, 1);
         spellAura += parseInt(bone.attr('aura'));
+
+        //Randomly choose whether to create a spell at this level, with a higher chance the more bones chosen without creating a spell
         spellOrNot += Math.floor(Math.random() * 4) + stepsWithNoSpell;
         stepsWithNoSpell += 1;
+
+        //Create a spell
         if (spellOrNot > 5 || bonesOnScreen.length === 0 || firstBone) {
             var spellType;
+
+            //The first bone chosen should only create a spell if the player has access to "frostbite" or "sight".
+            //These spells are so beneficial that the chance of getting them should be low: the chance to guess the correct bone on the first try.
             if (firstBone) {
                 firstBone = false;
+                
+                //"Frostbite" has a 50% chance of being available from level 11 onward.
                 var firstSpell = Math.floor(Math.random() * 2);
                 if (firstSpell === 0 && roundCount > 10) {
                     spellType = 4;
                 }
+                
+                //"Sight" is available from level 16 onward, when "Frostbite" is not.
                 else if (firstSpell === 1 && roundCount > 15) {
                     spellType = 5;
                 }
+
+                //Leave this iteration without creating a spell if neither "Frostbite" nor "Sight" is to be created.
                 else {
                     continue;
                 }
             }
-            else if (!hasProtect && roundCount > 5 && bonesOnScreen.length > 0) {
+
+            // Choose a random number between 0 and 3 if it is possible to get the spell "Shield"
+            // "Shield" should only be available from level 6 onward, and only once per round.
+            else if (!hasShieldSpell && roundCount > 5 && bonesOnScreen.length > 0) {
                 spellType = Math.floor(Math.random() * 4);
             }
+
+            // Choose a random number between 0 and 2 if "Shield" is unavailable.
             else {
                 spellType = Math.floor(Math.random() * 3);
             }
             stepsWithNoSpell = 0;
 
-            //Final spell, check if there are no damage dealing spells yet
+            //Final spell, check if there are no damage dealing spells yet. 
+            //Every round needs at least one damage dealing spell, so changes the spell type if needed.
             if (bonesOnScreen.length === 0) {
                 var hasDamageSpell = false;
                 for (var i = 0; i < spells.length; i++) {
@@ -269,6 +308,7 @@ function newGame() {
                 }
             }
 
+            //Create a spell image element
             var spell = $('<img>');
             spell.attr('width', '100px');
             spell.attr('aura', spellAura);
@@ -277,7 +317,11 @@ function newGame() {
             spell.css('opacity', '0.5');
 
             //Damage spells
+            //50% chance if protect is available.
+            //67% chance if protect is unavailable.
             if (spellType <= 1) {
+        
+                //Different spell images based on spell power
                 if (spellAura < 20) {
                     spell.attr('src', 'assets/images/fireball-red-1.png');
                 }
@@ -287,11 +331,16 @@ function newGame() {
                 else {
                     spell.attr('src', 'assets/images/fireball-red-2.png');
                 }
+
                 // Create the spell
                 spell.on('click', function () {
+
+                    //Do not allow spell to be cast if sprites are animating.
                     if (animating) {
                         return;
                     }
+
+                    //Only allow spell to cast if the player has the correct amount of aura.
                     var auraToCast = parseInt($(this).attr('aura'));
                     if (auraToCast === aura) {
                         animating = true;
@@ -302,15 +351,21 @@ function newGame() {
                             }, 800);
                             return;
                         }
+
+                        //Show sprite attack, fade out the spell 
                         var oldEnemyPercent = 100 * (game.enemy.enemyHP / game.enemy.HPAtStart);
                         game.enemy.enemyHP -= auraToCast;
                         $(this).fadeOut();
                         $('#spell-' + auraToCast).fadeOut();
                         $('#player').attr('src', 'assets/images/wizard-attack.gif');
+
+                        //Return to idle sprite
                         setTimeout(function () {
                             $('#player').attr('src', 'assets/images/wizard-idle.gif');
                         }, 2000);
                         setTimeout(function () {
+
+                            //Enemy dead animation
                             if (game.enemy.enemyHP <= 0) {
                                 $('#enemyHP').text('0');
                                 $('#enemy').attr('src', 'assets/images/' + game.enemy.enemyName + '-dead.gif');
@@ -318,12 +373,16 @@ function newGame() {
                                     $('#enemy').css('transform', 'translate(-50px,-225px)');
                                 }
                             }
+
+                            //Enemy hit animation
                             else {
                                 $('#enemyHP').text(game.enemy.enemyHP);
                                 $('#enemy').attr('src', 'assets/images/' + game.enemy.enemyName + '-hit.gif');
                                 if (roundCount === 20) {
                                     $('#enemy').css('transform', 'translate(-50px,-225px)');
                                 }
+
+                                //Enemy returns to idle after being hit
                                 setTimeout(function () {
                                     $('#enemy').attr('src', 'assets/images/' + game.enemy.enemyName + '-idle.gif');
                                     if (roundCount === 20) {
@@ -331,6 +390,8 @@ function newGame() {
                                     }
                                 }, 800);
                             }
+
+                            //Enemy damage floating text animation
                             $('#enemyText').text("-" + auraToCast);
                             $('#enemyText').animate({
                                 top: '-5%',
@@ -341,6 +402,8 @@ function newGame() {
                                 $('#enemyText').css('opacity', '100');
                                 animating = false;
                             });
+
+                            //Enemy health bar animation
                             var newEnemyPercent = 100 * (game.enemy.enemyHP / game.enemy.HPAtStart);
                             if (newEnemyPercent < 0) {
                                 newEnemyPercent = 0;
@@ -357,7 +420,11 @@ function newGame() {
                 });
             }
             //Healing spells
+            //25% chance if protect is available.
+            //33% chance if protect is unavailable.
             else if (spellType === 2) {
+
+                //Different spell images based on spell power
                 if (spellAura < 20) {
                     spell.attr('src', 'assets/images/heal-royal-1.png');
                 }
@@ -367,21 +434,31 @@ function newGame() {
                 else {
                     spell.attr('src', 'assets/images/heal-royal-2.png');
                 }
+
                 // Create the spell
                 spell.on('click', function () {
+
+                    //Do not allow spell to be cast if sprites are animating.
                     if (animating) {
                         return;
                     }
+                    
+                    //Only allow spell to cast if the player has the correct amount of aura.
                     var auraToCast = parseInt($(this).attr('aura'));
                     if (auraToCast === aura) {
+                        //Player heal animation and spell fades out
                         animating = true;
                         $(this).fadeOut();
                         $('#spell-' + auraToCast).fadeOut();
                         $('#player').attr('src', 'assets/images/wizard-heal.gif');
+
+                        //Player returns to idle sprite
                         setTimeout(function () {
                             playerHP += auraToCast;
                             $('#playerHP').text(playerHP);
                             $('#player').attr('src', 'assets/images/wizard-idle.gif');
+
+                            //Player HP floating text animation
                             $('#playerText').text("+" + auraToCast);
                             $('#playerText').css('color', 'rgb(60,255,60)');
                             $('#playerText').animate({
@@ -393,6 +470,8 @@ function newGame() {
                                 $('#playerText').css('opacity', '100');
                                 animating = false;
                             });
+
+                            //Player health bar animation
                             var healedPercent = 100 * (playerHP / playerHPAtStart);
                             $('#playerHPLevel').animate({
                                 width: healedPercent + '%'
@@ -403,9 +482,14 @@ function newGame() {
                 });
             }
 
-            // Protect spells
+            // Shield spell
+            // 25% chance if shield spell is available.
             else if (spellType === 3) {
-                hasProtect = true;
+
+                //Sets a boolean to prevent another shield spell from being added.
+                hasShieldSpell = true;
+
+                //Different spell images based on spell power
                 if (spellAura < 20) {
                     spell.attr('src', 'assets/images/protect-jade-1.png');
                 }
@@ -415,18 +499,28 @@ function newGame() {
                 else {
                     spell.attr('src', 'assets/images/protect-jade-2.png');
                 }
+
                 // Create the spell
                 spell.on('click', function () {
+
+                    //Do not allow spell to be cast if sprites are animating.
                     if (animating) {
                         return;
                     }
+
+                    //Only allow spell to cast if the player has the correct amount of aura.
                     var auraToCast = parseInt($(this).attr('aura'));
                     if (auraToCast === aura) {
+
+                        //Player shield animation and spell fade out
                         animating = true;
                         $(this).fadeOut();
                         $('#spell-' + auraToCast).fadeOut();
                         $('#player').attr('src', 'assets/images/wizard-heal.gif');
+
                         setTimeout(function () {
+
+                            //Enemy's attack power is decreased depending on the strength of the shield.
                             if (auraToCast < 20) {
                                 game.enemy.power = Math.floor(game.enemy.power * 2 / 3);
                             }
@@ -436,6 +530,8 @@ function newGame() {
                             else {
                                 game.enemy.power = Math.floor(game.enemy.power / 2);
                             }
+
+                            //Player returns to idle, "+Shield" floating text animation
                             $('#player').attr('src', 'assets/images/wizard-idle.gif');
                             $('#playerText').text("+Shield");
                             $('#playerText').css('color', 'rgb(60,60,255)');
@@ -454,17 +550,25 @@ function newGame() {
                 });
             }
 
-            // DOT spell
+            // Frostbite spell
+            // 50% chance as first spell from level 11 onward
             else if (spellType === 4) {
                 spell.attr('src', 'assets/images/ice-blue-2.png');
+
                 // Create the spell
                 spell.on('click', function () {
+
+                    //Do not allow spell to be cast if sprites are animating.
                     if (animating) {
                         return;
                     }
+
+                    //Only allow spell to cast if the player has the correct amount of aura.
                     var auraToCast = parseInt($(this).attr('aura'));
                     if (auraToCast === aura) {
                         animating = true;
+
+                        //This shouldn't be possible...
                         if ($('#enemyHP').text() === '0') {
                             setTimeout(function () {
                                 noMoreMoves();
@@ -472,7 +576,12 @@ function newGame() {
                             }, 800);
                             return;
                         }
+
+                        //Changes the enemy's dotDamage property to the value of the aura cast.
+                        //It will now be affected by DOT damage every time it attacks
                         game.enemy.dotDamage = auraToCast;
+
+                        //Animate spell fadeout, player sprite attack to idle.
                         $(this).fadeOut();
                         $('#spell-' + auraToCast).fadeOut();
                         $('#player').attr('src', 'assets/images/wizard-attack.gif');
@@ -480,10 +589,14 @@ function newGame() {
                             $('#player').attr('src', 'assets/images/wizard-idle.gif');
                         }, 2000);
                         setTimeout(function () {
+
+                            //This shouldn't be possible...
                             if (game.enemy.enemyHP <= 0) {
-                                // $('#enemyHP').text('0');
-                                // $('#enemy').attr('src', 'assets/images/' + game.enemy.enemyName + '-dead.gif');
+                                $('#enemyHP').text('0');
+                                $('#enemy').attr('src', 'assets/images/' + game.enemy.enemyName + '-dead.gif');
                             }
+
+                            //Enemy sprite is hit by the spell
                             else {
                                 $('#enemyHP').text(game.enemy.enemyHP);
                                 $('#enemy').attr('src', 'assets/images/' + game.enemy.enemyName + '-hit.gif');
@@ -491,6 +604,8 @@ function newGame() {
                                     $('#enemy').attr('src', 'assets/images/' + game.enemy.enemyName + '-idle.gif');
                                 }, 800);
                             }
+
+                            //"+Frostbite" flying text animation
                             $('#enemyText').text("+Frostbite");
                             $('#enemyText').animate({
                                 top: '-5%',
@@ -503,28 +618,38 @@ function newGame() {
                             });
                         }, 1000);
                     }
+
                     // Check if there any any moves remaining.
                     setTimeout(noMoreMoves, 800);
                 });
             }
 
             // Sight spell
+            // 50% chance as first spell from level 16 onward
             else if (spellType === 5) {
                 spell.attr('src', 'assets/images/evil-eye-eerie-2.png');
 
                 // Create the spell
                 spell.on('click', function () {
+
+                    //Do not allow spell to be cast if sprites are animating.
                     if (animating) {
                         return;
                     }
+
+                    //Only allow spell to cast if the player has the correct amount of aura.
                     var auraToCast = parseInt($(this).attr('aura'));
                     if (auraToCast === aura) {
+
+                        //Fades out spell and animates player's "heal" animation
                         animating = true;
                         $(this).fadeOut();
                         $('#spell-' + auraToCast).fadeOut();
                         $('#player').attr('src', 'assets/images/wizard-heal.gif');
                         setTimeout(function () {
 
+                            //Grab all the bones on the field and add text with their aura values after each of them
+                            //The CSS class "sightAura" will position them over the bone images.
                             var bonesInBoneyard = $('#boneyard img');
                             for (var i = 0; i < bonesInBoneyard.length; i++) {
                                 var boneToSee = $(bonesInBoneyard[i]);
@@ -534,6 +659,7 @@ function newGame() {
                                 boneToSee.after(auraToSee);
                             }
 
+                            //Change to idle sprite, "+Sight" floating text animation
                             $('#player').attr('src', 'assets/images/wizard-idle.gif');
                             $('#playerText').text("+Sight");
                             $('#playerText').css('color', 'rgb(60,60,255)');
@@ -569,7 +695,9 @@ function newGame() {
         }
     }
 
-    // Create enemy
+    //Create enemy
+
+    //Find player's maximum damage dealt with damage spells and HP healed with healing spells
     var maxDmgDealt = 0;
     var maxHpHealed = 0;
     for (var i = 0; i < spells.length; i++) {
@@ -582,11 +710,21 @@ function newGame() {
         }
     }
 
+    //Select a random HP value for enemy at most equal to the maximum damage the player can deal.
+    //(Must be max damage if the enemy is the final boss)
     var enemyHP = Math.floor(Math.random() * maxDmgDealt) + 1;
+    if(roundCount===20){
+        enemyHP = maxDmgDealt;
+    }
     $('#enemyHP').text(enemyHP);
-    var power = Math.floor(Math.random() * ((playerHP / 2) + maxHpHealed) / numberOfBones) + 1;
-    var enemyName = 'skeleton';
+
+    //Select a random attack power for the enemy.
+    //After all turns are taken the maximum damage the enemy can deal should be 2/3 the player's HP and half the player's healing capacity.
+    var power = Math.floor(Math.random() * ((playerHP*2/3) + (maxHpHealed/2)) / numberOfBones) + 1;
+    var enemyName = '';
     var enemyColor = 0;
+
+    // Final boss enemy if player has reached round 20
     if (roundCount === 20) {
         enemyName = 'demon';
         $('#enemy').css('position', 'absolute');
@@ -594,7 +732,15 @@ function newGame() {
         $('#enemy').css('transform', 'translate(-95px,-150px)');
         $('#enemy').css('z-index', '1');
     }
-    else {
+
+    // Normal skeleton enemy
+    else{
+        enemyName = 'skeleton';
+        $('#enemy').css('position', 'static');
+        $('#enemy').css('height', '100px');
+        $('#enemy').css('transform', 'scaleX(-1)');
+        $('#enemy').css('filter', 'FlipH');
+
         //Make skeleton's color match bones
         switch (boneSet) {
             case 1:
@@ -613,8 +759,10 @@ function newGame() {
         }
     }
 
+    // Sprite to display at the start of the round
     var sprite = 'assets/images/' + enemyName + '-idle.gif';
 
+    // This will be used if the enemy is afflicted with frostbite.
     var dotDamage = 0;
 
     $('#enemy').attr('src', sprite);
@@ -630,6 +778,7 @@ function newGame() {
     $('#playerHP').text(playerHP);
     $('#round').text(roundCount);
 
+    //Reset aura/HP bars
     $('#auraLevel').animate({
         width: '0%'
     }, 800, 'linear');
@@ -714,12 +863,6 @@ function setNewGame() {
     roundCount = 1;
     animating = false;
     changingLevels = false;
-
-    // If previous game reached level 20, the enemy sprite attributes must be reset.
-    $('#enemy').css('position', 'static');
-    $('#enemy').css('height', '100px');
-    $('#enemy').css('transform', 'scaleX(-1)');
-    $('#enemy').css('filter', 'FlipH');
 
     $('#boneyard').empty();
     var bonesHeader = $('<h1>');

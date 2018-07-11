@@ -10,7 +10,7 @@ Spells come in five varieties as of the current version:
 * Damage: deals damage to the enemy equal to aura required to cast it. The icon is an orange fireball.
 * Heal: heals the player equal to the aura required to cast it. The icon is a heart with a cross. 
 * Shield: protects the player such that subsequent enemy attacks deal less damage. The icon is a green shield. Available from level 6 onward. 
-* Frostbite: causes damage over time on the enemy, taken after each time the enemy attacks euqal to the aura required to cast it. The icon is blue ice shards. Available from level 11 onward. 
+* Frostbite: causes damage over time on the enemy, taken after each time the enemy attacks equal to the aura required to cast it. The icon is blue ice shards. Available from level 11 onward. 
 * Sight: reveals the aura values for all bones on the field. The icon is a green eye. Available from level 16 onward.
 
 The game is over if the player dies or runs out of useable spells without killing the enemy. You win if you beat the final boss at level 20.
