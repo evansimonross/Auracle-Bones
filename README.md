@@ -29,5 +29,6 @@ This project would not have been possible if not for the myriad free-to-use artw
 * Wizard sprites by [Calciumtrice](http://calciumtrice.tumblr.com/) Found on [Open Game Art.org](https://opengameart.org/content/animated-wizard).
 * Skeleton sprite by [Jesse M.](https://twitter.com/Jsf23Art) Found on [itch.io](https://jesse-m.itch.io/skeleton-pack).
 * Demon sprite by Luis Zuno aka [Ansimuz](https://www.patreon.com/ansimuz/memberships). Found on [itch.io](https://ansimuz.itch.io/gothicvania-patreon-collection).
+* Aura crystal sprite by [mieki256](http://blawat2015.no-ip.com/~mieki256/). Found on [Open Game Art.org](https://opengameart.org/users/mieki256).
 * Background pattern from [Toptal Subtle Patterns](https://www.toptal.com/designers/subtlepatterns/tweed/).
 * Sprite editing via <https://easygif.com> and <https://piskelapp.com>.
