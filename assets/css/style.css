@@ -180,3 +180,11 @@ hr{
     width: 0%;
     height: 100%;
 }
+
+.skullcross{
+    position: relative;
+    float: left;
+    width: 10%;
+    margin: 5px;
+    top:-24px;
+}

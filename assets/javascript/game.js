@@ -262,13 +262,13 @@ function newGame() {
             //These spells are so beneficial that the chance of getting them should be low: the chance to guess the correct bone on the first try.
             if (firstBone) {
                 firstBone = false;
-                
+
                 //"Frostbite" has a 50% chance of being available from level 11 onward.
                 var firstSpell = Math.floor(Math.random() * 2);
                 if (firstSpell === 0 && roundCount > 10) {
                     spellType = 4;
                 }
-                
+
                 //"Sight" is available from level 16 onward, when "Frostbite" is not.
                 else if (firstSpell === 1 && roundCount > 15) {
                     spellType = 5;
@@ -320,7 +320,7 @@ function newGame() {
             //50% chance if protect is available.
             //67% chance if protect is unavailable.
             if (spellType <= 1) {
-        
+
                 //Different spell images based on spell power
                 if (spellAura < 20) {
                     spell.attr('src', 'assets/images/fireball-red-1.png');
@@ -442,7 +442,7 @@ function newGame() {
                     if (animating) {
                         return;
                     }
-                    
+
                     //Only allow spell to cast if the player has the correct amount of aura.
                     var auraToCast = parseInt($(this).attr('aura'));
                     if (auraToCast === aura) {
@@ -713,14 +713,14 @@ function newGame() {
     //Select a random HP value for enemy at most equal to the maximum damage the player can deal.
     //(Must be max damage if the enemy is the final boss)
     var enemyHP = Math.floor(Math.random() * maxDmgDealt) + 1;
-    if(roundCount===20){
+    if (roundCount === 20) {
         enemyHP = maxDmgDealt;
     }
     $('#enemyHP').text(enemyHP);
 
     //Select a random attack power for the enemy.
     //After all turns are taken the maximum damage the enemy can deal should be 2/3 the player's HP and half the player's healing capacity.
-    var power = Math.floor(Math.random() * ((playerHP*2/3) + (maxHpHealed/2)) / numberOfBones) + 1;
+    var power = Math.floor(Math.random() * ((playerHP * 2 / 3) + (maxHpHealed / 2)) / numberOfBones) + 1;
     var enemyName = '';
     var enemyColor = 0;
 
@@ -734,7 +734,7 @@ function newGame() {
     }
 
     // Normal skeleton enemy
-    else{
+    else {
         enemyName = 'skeleton';
         $('#enemy').css('position', 'static');
         $('#enemy').css('height', '100px');
@@ -825,6 +825,15 @@ function noMoreMoves() {
                 }
                 roundCount++;
                 message("ROUND " + (roundCount));
+
+                //Add a crossbones to the round counter
+                $('#currentRound').before($('<img class="skullcross" src="assets/images/crossbones.png">'));
+                if(roundCount===20){
+                    $('#currentRound').attr('src','assets/images/boss-skull.png');
+                    $('#currentRound').css('width','18%');
+                    $('#currentRound').css('top','-30px');
+                }
+
                 setTimeout(function () {
                     game = newGame();
                 }, 2000);
@@ -880,6 +889,9 @@ function setNewGame() {
     $('#clickMe').on('click', function () {
         game = newGame();
     });
+
+    $('.skullcross').remove();
+    $('#round').after('<img id="currentRound" class="skullcross" src="assets/images/skull.png">');
 }
 
 $(document).ready(setNewGame());
