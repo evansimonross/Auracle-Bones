@@ -49,7 +49,7 @@ img:hover{
           drop-shadow(-2px 2px 0 #0009);
 }
 
-.header-img{
+#header-img{
     width:100%;
     display:block;
     margin-left: auto;
