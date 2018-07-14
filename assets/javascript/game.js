@@ -49,6 +49,7 @@ function newGame() {
     for (var i = 0; i < numberOfBones; i++) {
         var boneType = bonesInRound[Math.floor(Math.random() * bonesInRound.length)];
         var bone = $('<img>');
+        bone.addClass('clickable');
         bone.attr('src', boneType.image);
         bone.css('transform', 'rotate(' + boneType.rotation + 'deg)');
         bone.css('float,left');
@@ -82,6 +83,7 @@ function newGame() {
             $(this).animate({
                 opacity: 0.1
             }, 800, 'linear');
+            $(this).removeClass('clickable');
 
             // Highlight a spell if the player's aura matches the spell's aura.
             for (var i = 0; i < spells.length; i++) {
@@ -90,10 +92,12 @@ function newGame() {
                 if (aura === spellAura) {
                     spell.css('border', 'solid 3px yellow');
                     spell.css('opacity', '1.0');
+                    spell.addClass('clickable');
                 }
                 else {
                     spell.css('border', 'solid 3px #0006');
                     spell.css('opacity', '0.5');
+                    spell.removeClass('clickable');
                 }
             }
 
@@ -808,10 +812,10 @@ function newGame() {
     //Add a crossbones to the round counter
     if(roundCount===1){
         $('.skullcross').remove();
-        $('#round').after('<img id="currentRound" class="skullcross" src="assets/images/skull.png">');
+        $('#round').after('<img id="currentRound" class="skullcross clickable" src="assets/images/skull.png">');
     }
     else{
-        $('#currentRound').before($('<img class="skullcross" src="assets/images/crossbones.png">'));
+        $('#currentRound').before($('<img class="skullcross clickable" src="assets/images/crossbones.png">'));
     }
     if (roundCount === 20) {
         $('#currentRound').attr('src', 'assets/images/boss-skull.png');
@@ -898,6 +902,7 @@ function setNewGame() {
     var bonesHeader = $('<h1>');
     bonesHeader.text('Bones');
     var bone = $('<img>');
+    bone.addClass('clickable');
     bone.attr('id', 'clickMe');
     bone.attr('src', 'assets/images/bone2c.png');
     bone.attr('width', '125px');
