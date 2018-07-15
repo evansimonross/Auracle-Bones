@@ -970,6 +970,7 @@ $(document).on('click', '.skullcross', function () {
     $('#round-modal').modal('toggle');
 });
 
+// Show the how to and credits when the header image is clicked.
 $(document).on('click', '#header-img', function () {
     $('#message-modal-body').empty();
     $('#message-modal-body').append('<h1>How to Play</h1>');
@@ -982,8 +983,11 @@ $(document).on('click', '#header-img', function () {
     $('#message-modal').modal('toggle');
 });
 
-$(document).ready(function(){
+$(document).ready(function () {
+    //Prepare the game when the page loads.
     setNewGame();
+
+    //Show a modal describing the lore and gameplay.
     $('#message-modal-body').empty();
     $('#message-modal-body').append('<h1>Auracle Bones</h1>');
     $('#message-modal-body').append('<p class="desc">You are an <em>auracle</em>, a practitioner of the ancient art of channeling the latent life energy in <em>bones</em> into a magical substance called <em>aura</em>. Different types of bones have different stores of life energy. As you draw aura from one type of bone, your aura meter will increase by a specific number.</p>');
