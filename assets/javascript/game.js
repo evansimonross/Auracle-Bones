@@ -374,7 +374,17 @@ function newGame() {
                                 $('#enemy').css('filter', 'brightness(2)');
                                 setTimeout(function () {
                                     $('#enemy').css('filter', 'brightness(0.5)');
-                                }, 200);
+                                }, 100);
+                                $('#enemyText').text("-" + auraToCast);
+                                $('#enemyText').animate({
+                                    top: '-5%',
+                                    opacity: 0
+                                }, 800, 'linear', function () {
+                                    $('#enemyText').text('');
+                                    $('#enemyText').css('top', '20%');
+                                    $('#enemyText').css('opacity', '100');
+                                    animating = false;
+                                });
                             }, 1000);
                             return;
                         }
