@@ -357,7 +357,7 @@ function newGame() {
                         var oldEnemyPercent = 100 * (game.enemy.enemyHP / game.enemy.HPAtStart);
                         game.enemy.enemyHP -= auraToCast;
                         game.thisRound.damageDealt += auraToCast;
-                        game.thisRound.damageSpellsCast ++;
+                        game.thisRound.damageSpellsCast++;
                         $(this).fadeOut();
                         $('#spell-' + auraToCast).fadeOut();
                         $('#player').attr('src', 'assets/images/wizard-attack.gif');
@@ -371,9 +371,9 @@ function newGame() {
                             setTimeout(function () {
                                 noMoreMoves();
                                 animating = false;
-                                $('#enemy').css('filter','brightness(2)');
-                                setTimeout(function (){
-                                    $('#enemy').css('filter','brightness(0.5)');
+                                $('#enemy').css('filter', 'brightness(2)');
+                                setTimeout(function () {
+                                    $('#enemy').css('filter', 'brightness(0.5)');
                                 }, 200);
                             }, 1000);
                             return;
@@ -498,14 +498,14 @@ function newGame() {
                             }
 
                             //Resets the max health to current health if heals have brought the player higher than at first in the round
-                            else{
+                            else {
                                 playerHPAtStart = playerHP;
                                 $('#playerHPLevel').animate({
                                     width: '115%'
-                                },400, 'linear', function(){
+                                }, 400, 'linear', function () {
                                     $('#playerHPLevel').animate({
                                         width: '100%'
-                                    },400, 'linear');
+                                    }, 400, 'linear');
                                 });
                             }
                         }, 2000);
@@ -827,12 +827,12 @@ function newGame() {
     }, 800, 'linear');
 
     //Add a crossbones to the round counter
-    if(roundCount===1){
+    if (roundCount === 1) {
         $('.skullcross').remove();
         $('#round').after('<img id="currentRound" class="skullcross clickable" src="assets/images/skull.png">');
     }
-    else{
-        $('#currentRound').before($('<img class="skullcross clickable" src="assets/images/crossbones.png" crossRound="' + (roundCount-1) + '">'));
+    else {
+        $('#currentRound').before($('<img class="skullcross clickable" src="assets/images/crossbones.png" crossRound="' + (roundCount - 1) + '">'));
     }
     if (roundCount === 20) {
         $('#currentRound').attr('src', 'assets/images/boss-skull.png');
@@ -890,7 +890,7 @@ function noMoreMoves() {
                 message("ROUND " + (roundCount));
 
                 setTimeout(function () {
-                    roundData[roundCount-2] = game.thisRound;
+                    roundData[roundCount - 2] = game.thisRound;
                     game = newGame();
                 }, 2000);
             }, waitTime);
@@ -950,24 +950,36 @@ function setNewGame() {
 }
 
 // Adds click handlers to skull and crossbone icons. They display a modal with stats about the round they correspond to.
-$(document).on('click','.skullcross',function(){
+$(document).on('click', '.skullcross', function () {
     var roundToDisplay;
-    if($(this).attr('id')==='currentRound'){
+    if ($(this).attr('id') === 'currentRound') {
         roundToDisplay = game.thisRound;
     }
-    else{
-        roundToDisplay = roundData[parseInt($(this).attr('crossRound'))-1];
+    else {
+        roundToDisplay = roundData[parseInt($(this).attr('crossRound')) - 1];
     }
-    $('.modal-body').empty();
-    $('.modal-body').append('<h3>Round ' + roundToDisplay.round + '</h3>');
-    $('.modal-body').append('<hr>');
+    $('#round-modal-body').empty();
+    $('#round-modal-body').append('<h3>Round ' + roundToDisplay.round + '</h3>');
+    $('#round-modal-body').append('<hr>');
     var dataList = $('<ul>');
     dataList.append('<li>Aura Harvested: ' + roundToDisplay.auraHarvested + '</li>');
     dataList.append('<li>Damage Taken: ' + roundToDisplay.damageTaken + '</li>');
     dataList.append('<li>Damage Dealt: ' + roundToDisplay.damageDealt + '</li>');
     dataList.append('<li>HP Healed: ' + roundToDisplay.HPHealed + '</li>');
-    $('.modal-body').append(dataList);
-    $('.modal').modal('toggle');
+    $('#round-modal-body').append(dataList);
+    $('#round-modal').modal('toggle');
+});
+
+$(document).on('click', '#header-img', function () {
+    $('#message-modal-body').empty();
+    $('#message-modal-body').append('<h1>How to Play</h1>');
+    $('#message-modal-body').append('<p class="desc">Each round, a set of bones will appear under the "Bones" header. They will come in 2-6 randomized shapes. Each unique shape has an associated "aura" value. When you click a bone, its aura is depleted and added to your aura meter at the top left of your screen. Every time you harvest a bone, the enemy attacks as well.</p>');
+    $('#message-modal-body').append('<p class="desc">Under the "Spells" header is a list of spells available in that round. Spells may only be cast when your aura meter is precisely at the value listed under the spell. The spell will be highlighted in yellow if it is available. Click it to cast.</p>');
+    $('#message-modal-body').append('<p class="desc">The game is over if the player dies or runs out of useable spells without killing the enemy. You win if you beat the final boss at level 20.</p>')
+    $('#message-modal-body').append('<hr>');
+    $('#message-modal-body').append('<h1>Credits</h1>');
+    $('#message-modal-body').append('<ul><li>Game concept and programming by <a href="https://evansimonross.github.io">Evan Simon Ross</a>.</li><li>Bone and skull vectors found on <a href="https://www.vecteezy.com/" rel="nofollow">Vecteezy</a>.</li><li>Spell art by <a href="http://www.jwbjerk.com/art" rel="nofollow">J. W. Bjerk (eleazzaar)</a>. Found on <a href="https://opengameart.org/content/painterly-spell-icons-part-1" rel="nofollow">Open Game Art.org</a>.</li><li>Wizard sprites by <a href="http://calciumtrice.tumblr.com/" rel="nofollow">Calciumtrice</a> Found on <a href="https://opengameart.org/content/animated-wizard" rel="nofollow">Open Game Art.org</a>.</li><li>Skeleton sprites by <a href="https://twitter.com/Jsf23Art" rel="nofollow">Jesse M.</a> Found on <a href="https://jesse-m.itch.io/skeleton-pack" rel="nofollow">itch.io</a>.</li><li>Demon sprites by Luis Zuno aka <a href="https://www.patreon.com/ansimuz/memberships" rel="nofollow">Ansimuz</a>. Found on <a href="https://ansimuz.itch.io/gothicvania-patreon-collection" rel="nofollow">itch.io</a>.</li><li>Aura crystal sprite by <a href="http://blawat2015.no-ip.com/%7Emieki256/" rel="nofollow">mieki256</a>. Found on <a href="https://opengameart.org/users/mieki256" rel="nofollow">Open Game Art.org</a>.</li><li>Background pattern from <a href="https://www.toptal.com/designers/subtlepatterns/tweed/" rel="nofollow">Toptal Subtle Patterns</a>.</li><li>Sprite editing via <a href="https://easygif.com" rel="nofollow">https://easygif.com</a> and <a href="https://piskelapp.com" rel="nofollow">https://piskelapp.com</a>.</li></ul>')
+    $('#message-modal').modal('toggle');
 });
 
 $(document).ready(setNewGame());
