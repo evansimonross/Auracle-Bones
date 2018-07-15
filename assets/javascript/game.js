@@ -4,6 +4,7 @@ var roundCount;
 var game;
 var animating;
 var changingLevels;
+var roundData = [];
 
 function newGame() {
     var bonesInRound = [];
@@ -66,6 +67,7 @@ function newGame() {
 
             // Increase aura and animate the aura bar, aura floating text, and the bone's disappearance.
             aura += parseInt($(this).attr('aura'));
+            game.thisRound.auraHarvested = aura;
             $('#auraText').text("+" + $(this).attr('aura'));
             $('#auraText').animate({
                 top: '-5%',
@@ -133,6 +135,7 @@ function newGame() {
                         //Animate floating text
                         var oldEnemyPercent = 100 * (game.enemy.enemyHP / game.enemy.HPAtStart);
                         game.enemy.enemyHP -= game.enemy.dotDamage;
+                        game.thisRound.damageDealt += game.enemy.dotDamage;
                         $('#enemyText').text("-" + game.enemy.dotDamage);
                         $('#enemyText').animate({
                             top: '-5%',
@@ -190,6 +193,7 @@ function newGame() {
                 setTimeout(function () {
                     var oldPercent = 100 * (playerHP / playerHPAtStart);
                     playerHP -= game.enemy.power;
+                    game.thisRound.damageTaken += game.enemy.power;
 
                     //Player death animation
                     if (playerHP < 0) {
@@ -359,6 +363,8 @@ function newGame() {
                         //Show sprite attack, fade out the spell 
                         var oldEnemyPercent = 100 * (game.enemy.enemyHP / game.enemy.HPAtStart);
                         game.enemy.enemyHP -= auraToCast;
+                        game.thisRound.damageDealt += auraToCast;
+                        game.thisRound.damageSpellsCast ++;
                         $(this).fadeOut();
                         $('#spell-' + auraToCast).fadeOut();
                         $('#player').attr('src', 'assets/images/wizard-attack.gif');
@@ -459,6 +465,8 @@ function newGame() {
                         //Player returns to idle sprite
                         setTimeout(function () {
                             playerHP += auraToCast;
+                            game.thisRound.HPHealed += auraToCast;
+                            game.thisRound.healingSpellsCast++;
                             $('#playerHP').text(playerHP);
                             $('#player').attr('src', 'assets/images/wizard-idle.gif');
 
@@ -548,6 +556,7 @@ function newGame() {
                             else {
                                 game.enemy.power = Math.floor(game.enemy.power / 2);
                             }
+                            game.thisRound.shieldSpellsCast++;
 
                             //Player returns to idle, "+Shield" floating text animation
                             $('#player').attr('src', 'assets/images/wizard-idle.gif');
@@ -598,6 +607,7 @@ function newGame() {
                         //Changes the enemy's dotDamage property to the value of the aura cast.
                         //It will now be affected by DOT damage every time it attacks
                         game.enemy.dotDamage = auraToCast;
+                        game.thisRound.frostbiteSpellsCast++;
 
                         //Animate spell fadeout, player sprite attack to idle.
                         $(this).fadeOut();
@@ -664,6 +674,7 @@ function newGame() {
                         $(this).fadeOut();
                         $('#spell-' + auraToCast).fadeOut();
                         $('#player').attr('src', 'assets/images/wizard-heal.gif');
+                        game.thisRound.sightSpellsCast++;
                         setTimeout(function () {
 
                             //Grab all the bones on the field and add text with their aura values after each of them
@@ -815,7 +826,7 @@ function newGame() {
         $('#round').after('<img id="currentRound" class="skullcross clickable" src="assets/images/skull.png">');
     }
     else{
-        $('#currentRound').before($('<img class="skullcross clickable" src="assets/images/crossbones.png">'));
+        $('#currentRound').before($('<img class="skullcross clickable" src="assets/images/crossbones.png" crossRound="' + (roundCount-1) + '">'));
     }
     if (roundCount === 20) {
         $('#currentRound').attr('src', 'assets/images/boss-skull.png');
@@ -823,8 +834,21 @@ function newGame() {
         $('#currentRound').css('top', '-30px');
     }
 
+    // Save data from this round for use in modal displays.
+    var thisRound = {
+        round: roundCount,
+        auraHarvested: 0,
+        damageDealt: 0,
+        damageTaken: 0,
+        HPHealed: 0,
+        damageSpellsCast: 0,
+        healingSpellsCast: 0,
+        shieldSpellsCast: 0,
+        frostbiteSpellsCast: 0,
+        sightSpellsCast: 0
+    };
 
-    return { bonesInRound, spells, enemy };
+    return { bonesInRound, spells, enemy, thisRound };
 }
 
 // Check if an image container is empty of fully opaque items.
@@ -860,6 +884,7 @@ function noMoreMoves() {
                 message("ROUND " + (roundCount));
 
                 setTimeout(function () {
+                    roundData[roundCount-2] = game.thisRound;
                     game = newGame();
                 }, 2000);
             }, waitTime);
@@ -917,5 +942,25 @@ function setNewGame() {
     });
 
 }
+
+// Adds click handlers to skull and crossbone icons. They display a modal with stats about the round they correspond to.
+$(document).on('click','.skullcross',function(){
+    var roundToDisplay;
+    if($(this).attr('id')==='currentRound'){
+        roundToDisplay = game.thisRound;
+    }
+    else{
+        roundToDisplay = roundData[parseInt($(this).attr('crossRound'))-1];
+    }
+    $('.modal-body').empty();
+    $('.modal-body').append('<h3>Round ' + roundToDisplay.round + '</h3>');
+    var dataList = $('<ul>');
+    dataList.append('<li>Aura Harvested: ' + roundToDisplay.auraHarvested + '</li>');
+    dataList.append('<li>Damage Taken: ' + roundToDisplay.damageTaken + '</li>');
+    dataList.append('<li>Damage Dealt: ' + roundToDisplay.damageDealt + '</li>');
+    dataList.append('<li>HP Healed: ' + roundToDisplay.HPHealed + '</li>');
+    $('.modal-body').append(dataList);
+    $('.modal').modal('toggle');
+});
 
 $(document).ready(setNewGame());
