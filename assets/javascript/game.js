@@ -352,13 +352,6 @@ function newGame() {
                     var auraToCast = parseInt($(this).attr('aura'));
                     if (auraToCast === aura) {
                         animating = true;
-                        if ($('#enemyHP').text() === '0') {
-                            setTimeout(function () {
-                                noMoreMoves();
-                                animating = false;
-                            }, 800);
-                            return;
-                        }
 
                         //Show sprite attack, fade out the spell 
                         var oldEnemyPercent = 100 * (game.enemy.enemyHP / game.enemy.HPAtStart);
@@ -373,6 +366,19 @@ function newGame() {
                         setTimeout(function () {
                             $('#player').attr('src', 'assets/images/wizard-idle.gif');
                         }, 2000);
+
+                        if ($('#enemyHP').text() === '0') {
+                            setTimeout(function () {
+                                noMoreMoves();
+                                animating = false;
+                                $('#enemy').css('filter','brightness(2)');
+                                setTimeout(function (){
+                                    $('#enemy').css('filter','brightness(0.5)');
+                                }, 200);
+                            }, 1000);
+                            return;
+                        }
+
                         setTimeout(function () {
 
                             //Enemy dead animation
@@ -954,6 +960,7 @@ $(document).on('click','.skullcross',function(){
     }
     $('.modal-body').empty();
     $('.modal-body').append('<h3>Round ' + roundToDisplay.round + '</h3>');
+    $('.modal-body').append('<hr>');
     var dataList = $('<ul>');
     dataList.append('<li>Aura Harvested: ' + roundToDisplay.auraHarvested + '</li>');
     dataList.append('<li>Damage Taken: ' + roundToDisplay.damageTaken + '</li>');
