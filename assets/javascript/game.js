@@ -373,7 +373,7 @@ function newGame() {
                                 animating = false;
                                 $('#enemy').css('filter', 'brightness(2)');
                                 setTimeout(function () {
-                                    $('#enemy').css('filter', 'brightness(0.5)');
+                                    $('#enemy').css('filter', 'brightness(0.35)');
                                 }, 100);
                                 $('#enemyText').text("-" + auraToCast);
                                 $('#enemyText').animate({
@@ -962,7 +962,13 @@ function setNewGame() {
 // Adds click handlers to skull and crossbone icons. They display a modal with stats about the round they correspond to.
 $(document).on('click', '.skullcross', function () {
     var roundToDisplay;
-    if ($(this).attr('id') === 'currentRound') {
+    if ($(this).attr('id') === "dummySkull") {
+        $('#round-modal-body').empty();
+        $('#round-modal-body').append("<p class='desc'>Click on these icons after you've started a game to see some cool stats about each round!</p>");
+        $('#round-modal').modal('toggle');
+        return;
+    }
+    else if ($(this).attr('id') === 'currentRound') {
         roundToDisplay = game.thisRound;
     }
     else {
