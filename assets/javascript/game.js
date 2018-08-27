@@ -164,6 +164,7 @@ function newGame() {
                             $('#enemy').attr('src', 'assets/images/' + game.enemy.enemyName + '-dead.gif');
                             if (roundCount === 20) {
                                 $('#enemy').css('transform', 'translate(-50px,-225px)');
+                                $('#enemy').css('z-index','0');
                             }
                         }
 
@@ -397,6 +398,7 @@ function newGame() {
                                 $('#enemy').attr('src', 'assets/images/' + game.enemy.enemyName + '-dead.gif');
                                 if (roundCount === 20) {
                                     $('#enemy').css('transform', 'translate(-50px,-225px)');
+                                    $('#enemy').css('z-index', '0');
                                 }
                             }
 
