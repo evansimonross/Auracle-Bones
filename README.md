@@ -2,6 +2,8 @@
 A simple number-puzzle turn-based RPG game. The player is an *auracle*, a practitioner of the ancient art of channeling the latent life energy in *bones* into a magical substane called *aura*. The player uses this aura to cast *spells* and to defeat enemies. 
 
 ## How to Play
+[Click Here to Play](https://evansimonross.github.io/Auracle-Bones/).
+
 Each round, a set of bones will appear under the "Bones" header. They will come in 2-6 randomized shapes. Each unique shape has an associated "aura" value. When you click a bone, its aura is depleted and added to your aura meter at the top left of your screen. Every time you harvest a bone, the enemy attacks as well. 
 
 Under the "Spells" header is a list of spells available in that round. Spells may only be cast when your aura meter is precisely at the value listed under the spell. The spell will be highlighted in yellow if it is available. Click it to cast.
